@@ -1,0 +1,30 @@
+body {font:normal 12px/14px ËÎÌו,arial;margin:0px;padding:0px;text-align:center;}
+table {padding:0px;border:0px;}
+td {border:1px #6973e7 solid;font:normal 12px/14px ËÎÌו,arial;line-height:160%;text-align:center;padding:2px;}
+img {border:0px;}
+.ctrl{width:92%;}
+#UpFileInput {
+	height:30px;
+	background:#888FEC;
+	text-align:right;
+	line-height:140%;
+	padding:3px;
+}
+#ViewPictureList {
+	background:#B3B8F2;
+	text-align:left;
+	line-height:150px;
+	padding:3px;
+}
+#ViewPicturePage {
+	height:25px;
+	text-align:right;
+	padding:3px;
+}
+#FootCSS {
+	background:#888FEC;
+	text-align:right;
+	line-height:150%;
+	padding:3px;
+}
+

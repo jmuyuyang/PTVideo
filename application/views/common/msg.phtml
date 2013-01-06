@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8" />
+	<!-- Set the viewport width to device width for mobile -->
+	<meta name="viewport" content="width=device-width" />
+	<meta http-equiv="refresh" content="2; URL='<?php echo $url;?>'" />
+	<link rel="stylesheet" href="/public/home/stylesheets/foundation.min.css">
+	<link rel="stylesheet" href="/public/home/stylesheets/app.css">
+	<link rel="stylesheet" href="/public/home/font/css/font-awesome.css">
+	<script src="/public/home/javascripts/jquery.js"></script>
+</head>
+<body>
+<div class="msg">
+	<div class="title">信息提示：</div>
+    <div class="msg-content"><?php echo $msg;?></div>
+</div>
+<script type="text/javascript">
+	$(".msg").animate({top: "60px",opacity:"1"},1000)
+		.animate({top:"-=30px",opacity:"0"},2000).animate({top:"-60px"},1);
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<?php
+$paginated = function ($page,$num,$size){
+    $half = intval($size / 2); 
+    $page_start = max(1, $page - $half); 
+    $page_end = min($page_start + $size - 1, $num);
+    $page_start = max(1, $page_end - $size + 1);
+    return array($page_start,$page_end);
+};
+?> 
+  <link rel="stylesheet" href="/public/home/stylesheets/user.css">
+  <header class="topbar">
+    <div class="logo">
+      <a href="http://pt.jmu.edu.cn"><img src="/public/home/images/logo.png" />有源网</a>
+    </div>
+    <div class="user">
+      <a href="#"><?php echo $userInfo['username'];?></a>
+      <?php if($userInfo['is_admin']): ?>
+      <a href="/manage/" class="quit">管理</a>
+      <?php endif;?>
+      <a href="/logout" class="quit">退出</a>
+    </div>
+    <nav class="top-nav">
+      <ul>
+      <?php $style = $current_class?'':'class="selected"';?>
+      <li <?php echo $style;?>><a href="/"><div class="icon-home"></div>有源主页</a></li>
+      <?php foreach ($classList as $class):
+        $style = ($current_class && $current_class == $class)?'class="selected"':'';
+      ?>
+        <li <?php echo $style;?>><a href="/?id=<?php echo $class;?>"><div class="icon-play-circle"></div><?php echo $classInfo[$class][0];?></a></li>
+      <?php endforeach;?>
+      </ul>
+    </nav>
+    <div class="search">
+      <input id="search" type="text" value="搜索视频"><a class="button" id="index_search"><div class="icon-search"></div>搜索</a>
+    </div>
+  </header>
+  <div class="wrapper row">
+    <form id="power">
+      <div class="power">
+        <select name="search" class="mold">
+          <option value="1">管理员</option>
+          <option value="0" selected="selected">普通</option>
+        </select>
+      </div>
+      <div class="usersearch">
+        <input type="text" value="普通用户搜索"><a class="button">搜索</a>
+      </div>
+    </form>
+	<div class="listing">
+	  <div class="title red">视频管理</div>
+	  <ul>
+        <li>
+          <div class="name"><a href="/admin">进入后台设置</a></div>
+        </li>
+	   </ul>
+	</div>
+    <div class="listing">
+      <div class="title red">用户列表</div>
+      <ul>
+      <?php foreach ($userList as $user): ?>
+        <li>
+          <div class="name"><?php echo $user['username'];?></div>
+          <div class="mail"><?php echo $user['email'];?></div>
+          <form class="power">
+            <span>设置权限：</span>
+            <select name="search" class="set">
+              <option value=1 <?php echo ($user['is_admin'] == 1)?"selected='selected'":"";?>>管理员</option>
+              <option value=0 <?php echo ($user['is_admin'] == 0)?"selected='selected'":"";?>>普通</option>
+            </select>
+            <input type="submit" value="提交" style="float:right;width:50px;">
+            <input type="hidden" value="<?php echo $user['uid'];?>" class="uid">
+          </form>
+        </li>
+      <?php endforeach;?>
+      </ul>
+    </div>
+	<div class="page">
+      <ul>
+        <?php
+          list($page_start,$page_end) = $paginated($page,$pages,5);
+        ?>
+          <li><a href="<?php echo $uri;?>page=<?php echo ($page_start>1)?$page_start-1:1;?>" class="prev">前一页</a></li>
+        <?php 
+          for ($i=$page_start; $i<=$page_end; $i++): 
+            $style = ($i == $page)?'class="selected"':"";
+        ?>
+          <li <?php echo $style;?>><a href="<?php echo $uri;?>page=<?php echo $i;?>"><?php echo $i;?></a></li>
+        <?php endfor;?>
+        <li><a href="<?php echo $uri;?>page=<?php echo ($page_end>=$pages)?$page_end:$page_end+1;?>" class="next">后一页</a></li>
+      </ul>
+    </div>
+    <div class="invite">
+	    <div class="invitecode" id="invitecode">
+        <input type="text"><a class="button">获取邀请码</a>&nbsp<span class='prompt'></span>
+	     </div>
+      <div class="existing">
+        <p>用户已获取邀请码：<p>
+        <?php foreach ($inviteList as $invite):?>
+          <p><span><?php echo $invite['hash'];?></span>
+          <?php if($invite['used']):?>
+            <time class="">已被使用</time>
+          <?php elseif($invite['expire'] < time()): ?>
+            <time class="">已过期</time>
+          <?php else: ?>
+            <time class="">过期时间：<strong><?php echo strftime("%Y-%m-%d",$invite['expire']);?></strong></time>
+          <?php endif;?>
+          </p>
+        <?php endforeach;?>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  
+  <script src="javascripts/jquery.js"></script>
+  
+  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="javascripts/jquery.placeholder.js"></script>
+  
+  <script src="javascripts/jquery.foundation.alerts.js"></script>
+  
+  -->
+  
+  <!-- Included JS Files (Compressed) -->
+  <script src="/public/home/javascripts/jquery.js"></script>
+  <script src="/public/home/javascripts/foundation.min.js"></script>
+  <script src="/public/home/javascripts/jsjquery.user.js"></script>
+  
+  <!-- Initialize JS Plugins -->
+  <script src="/public/home/javascripts/app.js"></script>

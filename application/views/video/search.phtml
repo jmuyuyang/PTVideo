@@ -1,0 +1,87 @@
+  <header class="topbar">
+    <div class="logo">
+      <a href="http://pt.jmu.edu.cn"><img src="/public/home/images/logo.png" />有源网</a>
+    </div>
+    <div class="user">
+      <a href="#"><?php echo $userInfo['username'];?></a>
+      <?php if($userInfo['is_admin']): ?>
+      <a href="/manage/" class="quit">管理</a>
+      <?php endif;?>
+      <a href="/logout" class="quit">退出</a>
+    </div>
+    <nav class="top-nav">
+      <ul>
+      <?php $style = $current_class?'':'class="selected"';?>
+      <li <?php echo $style;?>><a href="/"><div class="icon-home"></div>有源主页</a></li>
+      <?php foreach ($classList as $class):
+        $style = ($current_class && $current_class == $class)?'class="selected"':'';
+      ?>
+        <li <?php echo $style;?>><a href="/?id=<?php echo $class;?>"><div class="icon-play-circle"></div><?php echo $classInfo[$class][0];?></a></li>
+      <?php endforeach;?>
+      </ul>
+    </nav>
+    <div class="search">
+      <input id="search" type="text" value="搜索视频"><a class="button" id="index_search"><div class="icon-search"></div>搜索</a>
+    </div>
+  </header>
+  <section class="container row">
+    <h1>视频搜索</h1>
+    <div class="row">
+      <form class="search-box eight columns centered" method="post" action="">
+        <ul>
+          <li id=0 class='selected'><a href="">所有<li>
+        <?php foreach ($classList as $item => $class) :?>
+          <li id=<?php echo $class;?>><a href=""><?php echo $classInfo[$class][0];?></li>
+        <?php endforeach;?>
+        </ul>
+        <div class="searchInputBox">
+          <div class="searchBtn-box">
+            <a class="searchBtn button">搜索</a>
+          </div>
+          <div class="searchInp-box">
+            <input class="searchInp key" cl=0 type="text"  >
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+  <footer>
+    <p>(c)<a href="http://pt.jmu.edu.cn">有源pt影视中心</a>2012-2013 Powered by <a href="#">集美大学网络性能测试小组</a></p>
+    <p>维护:集美大学网络开发小组&理学院网络协会</p>
+  </footer>
+
+
+  
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  
+  <script src="javascripts/jquery.js"></script>
+  
+  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="javascripts/jquery.placeholder.js"></script>
+  
+  <script src="javascripts/jquery.foundation.alerts.js"></script>
+  
+  -->
+  
+  <!-- Included JS Files (Compressed) -->
+  <script src="/public/home/javascripts/jsjquery.comments.js"></script>
+</body>
+</html>

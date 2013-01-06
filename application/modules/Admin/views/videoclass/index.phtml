@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>后台管理</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content=Alan name=Author>
+<LINK rev=MADE href="mailto:haowubai@hotmail.com">
+<LINK href="/public/admin/stylesheets/private.css" type=text/css rel=stylesheet>
+<script type="text/javascript" src="/public/admin/javascripts/main.js"></script>
+<META content="MSHTML 6.00.6000.16890" name=GENERATOR></HEAD>
+<BODY>
+<TABLE class=navi cellSpacing=1 align=center border=0>
+  <TBODY>
+  <TR>
+
+
+
+    <TH>后台 >> 视频分类</TH></TR></TBODY></TABLE><BR>
+
+	<table border=0 cellspacing=1 align=center class=form>
+	<tr>
+		<th colspan="2">添加分类</th>
+	</tr>
+	<form action="/admin/class/add" method="post" >
+    <tr>
+    <td colspan="2" align="center" height='30'>
+   &nbsp&nbsp&nbsp&nbsp分类名称&nbsp&nbsp <input type="text" name="name" value=""/>
+   </td>
+   </tr>
+   <tr>
+   <td colspan="2" align="center" height='30'>
+   是否公开&nbsp&nbsp <select name='ifprivate' style="width: 110px;">
+                      <option value='0'>公开</option>
+					  <option value='1'>不公开</option>
+					  </select>
+   </td>
+   </tr>
+   <tr>
+   <td colspan="2" align="center" height='30'>
+   <input type="hidden" name="parentid" value="0">
+   <input type="submit" name="into_class" value=" 添加分类 "/>
+   </td>
+    </tr>
+    </form>
+    </tr>
+	</table>
+<br>
+		<table border=0 cellspacing=1 align=center class=form>
+	<tr>
+	<th>系统分类</th>
+	</tr>
+<tr>
+	<td>公开分类</td>
+	</tr>
+	<tr>
+	<td>
+  <?php foreach($puid as $item => $puclass):?>
+  <form action="/admin/class/update" method="post">
+  &nbsp;┗<input type="hidden" name="id" value="<?php echo $item;?>" />
+  <input type="text" name="name" value="<?php echo $classname[$item][0];?>"/>
+  <?php if($item != 0):?>
+    <input type="submit" name="update_class" value=" 更新 "/>
+    <input type="button" value=" 删除 " onclick="location.href='/admin/class/del?id=<?php echo $item;?>'"/>
+  <?php endif;?>
+  <input type="button" value="添加子分类" onclick="addchd(<?php echo $item;?>);">
+   </form>
+    <?php foreach($puclass as $chdclass):?>
+	<form action="/admin/class/update" method="post">
+	  &nbsp;&nbsp;&nbsp;&nbsp;┗<input type="hidden" name="id" value="<?php echo $chdclass;?>" />
+      <input type="text" name="name" value="<?php echo $classname[$chdclass][0];?>"/>
+  <?php if($classname[$chdclass][1] == 1):?>
+	  <input type="button" value="查看分类视频" onclick="location.href='/admin/videos/list?select=<?php echo $chdclass;?>&cname=<?php echo $classname[$chdclass][0];?>'">
+  <?php endif;?>
+      <input type="submit" name="update_class" value=" 更新 "/>
+      <input type="button" value=" 删除 " onclick="location.href='/admin/class/del?id=<?php echo $chdclass;?>'"/>
+	 </form>
+	 <?php endforeach;?>
+	 <span id='addchdclass_<?php echo $item;?>' style="display:none">
+	 <form action="/admin/class/add" method="post">
+	 &nbsp;&nbsp;&nbsp;&nbsp;┗子分类名称:&nbsp&nbsp<input type="text" name="name">
+	 <input type="hidden" name="ifprivate" value=0>
+	 <input type="hidden" name="parentid" value="<?php echo $item?>">
+	 <input type="submit" value=" 添加 ">
+	 </form>
+	 </span>
+   <?php endforeach;?>
+  </td>
+  </tr>
+  <tr>
+ <td>私密分类</td>
+</tr>
+	<tr>
+	<td>
+  <?php foreach($prid as $item => $prclass):?>
+  <form action="/admin/class/update" method="post">
+  &nbsp;┗<input type="hidden" name="id" value="<?php echo $item;?>" />
+  <input type="text" name="name" value="<?php echo $classname[$item][0];?>"/>
+<?php if($item != 0):?>
+  <input type="submit" name="update_class" value=" 更新 "/>
+  <input type="button" value=" 删除 " onclick="location.href='/admin/class/del?id=<?php echo $item;?>'"/>
+<?php endif;?>
+  <input type="button" value="添加子分类" onclick="addchd(<?php echo $item;?>);">
+   </form>
+    <?php foreach($prclass as $chdclass):?>
+  <form action="/admin/class/update" method="post">
+    &nbsp;&nbsp;&nbsp;&nbsp;┗<input type="hidden" name="id" value="<?php echo $chdclass;?>" />
+      <input type="text" name="name" value="<?php echo $classname[$chdclass][0];?>"/>
+ <?php if($classname[$chdclass][1] == 1):?>
+    <input type="button" value="查看分类视频" onclick="location.href='/admin/videos/list?select=<?php echo $chdclass;?>&cname=<?php echo $classname[$chdclass][0];?>'">
+ <?php endif;?>
+      <input type="submit" name="update_class" value=" 更新 "/>
+      <input type="button" value=" 删除 " onclick="location.href='/admin/class/del?id=<?php echo $chdclass;?>'"/>
+   </form>
+   <?php endforeach;?>
+   <span id='addchdclass_<?php echo $item;?>' style="display:none">
+   <form action="/admin/class/add" method="post">
+   &nbsp;&nbsp;&nbsp;&nbsp;┗子分类名称:&nbsp&nbsp<input type="text" name="name">
+   <input type="hidden" name="ifprivate" value=0>
+   <input type="hidden" name="parentid" value="<?php echo $item?>">
+   <input type="submit" value=" 添加 ">
+   </form>
+   </span>
+   <?php endforeach;?>
+  </td>
+  </tr>
+	</table>
+	</BODY></HTML>
+
+

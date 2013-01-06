@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>后台管理</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content=Alan name=Author><LINK href="/public/admin/stylesheets/private.css"
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.6000.16890" name=GENERATOR>
+<script type="text/javascript" src="/public/admin/javascripts/jquery.js"></script>
+<script type="text/javascript" src="/public/admin/javascripts/main.js"></script>
+</HEAD>
+<BODY>
+<table class=navi cellSpacing=1 align=center border=0>
+  <tbody>
+  <tr>
+    <th>后台 >> 添加视频</th>
+  </tr>
+  </tbody>
+</table>
+  <br>
+<form enctype="multipart/form-data"  action="/admin/video/add" method="POST" >
+	<table border=0 cellspacing=1 align=center class=form>
+   <tr>
+   <td width=80>视频源文件</td>
+  <td>
+  <select name='distance' id='distance' onchange='setVideoType(this);'>
+      <option value=0>本地视频</option>
+      <option value=1>远程视频</option>
+      <option value=2>外网分享视频</option>
+  </select>&nbsp
+  <span id='textfile'>
+    <select id='file_type' onchange="setFileType(this);" disabled="disabled">
+      <option value="text">视频地址</option>
+      <option value="file">上传文件</option>
+    </select>
+  </span>
+  <span id='videofile'>
+    <input type="text" name="file" value='<?php echo $file;?>' size=60 maxlengh=180>
+  </span>
+    </td>
+    </tr>
+  <?php if(!$fid):?>
+	       <tr>
+   <td width=80>分类</td>
+  <td>
+<select name='videoselect' id='videoselect'>
+    <option>分类</option>
+<?php foreach($classList as $item => $class){
+    $style = $class['disabled']?"style='background-color: green' disabled='disabled'":"";
+?>
+    <option value=<?php echo $item;?> <?php echo $style;?>><?php echo $class['name'];?></option>
+<?php } ?>
+</select>
+<span id='videonum'>
+集数(电视剧或多集电影添加必须填写): &nbsp&nbsp <input type=text name='videonum' onfocus="this.value='';" onblur="if(this.value=='') this.value=0;" >
+</span>
+    </td>
+    </tr>
+	<tr>
+ <td width=80>视频截图</td>
+  <td>
+<select name='mType' id='videomplayer' onchange='shotselect();'>
+  <option value='1'>系统自动截图</option>
+  <option value='2'>手动上传图片</option> 
+ </select>
+ <span id='Screenshot'>截屏秒数:&nbsp&nbsp&nbsp<input type="text" name="mframe" id="mframe"></span>
+    </td>
+    </tr>
+	<tr>
+	<td width=80>描述图片</td>
+	<td><table width="100%">
+<tr><td class="embedded" colspan="2" align=left><input type="file" name="imgfile" />&nbsp;&nbsp;&nbsp;&nbsp;<b><span id='uploadtext'></span></b></td></table>
+<div id='uploadcaution'><b><font color='red'>描述图片限制上传大小为2MB,允许的上传格式为jpeg, jpg, png, gif,图片大小标准为200*200,上传图片将自动生成标准图片大小格式的缩略图</font></b></div>
+</td>
+    </tr>
+	<tr>
+	<td width=80>豆瓣imdb值</td>
+	<td>
+	<input type=text name='imdb' id='imdb'>&nbsp	
+	<input type='button' value='获取信息' name='getInfo' onclick='getVideoInfo(this);'>
+	<br/>
+	<font color='red'><b>在此输入imdb值,并请立即点击获取信息等待信息获取后再做表单提交</b></font>
+	</td>
+	</tr>
+	<tr>
+   <td width=80>名称</td>
+  <td>
+  <input type="text" name="title" id="title" size=20>
+    </td>
+    </tr>
+	<tr>
+	<td width=80>描述信息</td>
+  <td>
+<textarea id="edited" name="content" style="width:95%;height:280px;" ></textarea>
+    </td>
+	</tr>
+ <input type=hidden name='ifCreate' value=1>
+<?php else:?>
+  <tr>
+  <td width=80>传入目录</td>
+  <td>
+  <?php echo $dname;?><input type=hidden name=fid value="<?php echo $fid;?>"> 
+  </td>
+    </tr>
+  <tr>
+    <td width=80>视频截图</td>
+    <td>
+    <select name='videomplayer' id='videomplayer' onchange='shotselect();'>
+    <option value='1'>系统自动截图</option>
+    <option value='2'>手动上传图片</option> 
+  </select>
+ <span id='Screenshot'>截屏秒数:&nbsp&nbsp&nbsp<input type="text" name="mframe" id="mframe"></span>
+    </td>
+    </tr>
+  <?php if($videonum):?>
+  <tr>
+  <td width=90>更新集数</td>
+  <td>
+  <input type=text name='tmpnum' value=1>&nbsp当前已上传<?php echo $videonum;?>集
+  </td>
+  </tr>
+  <?php endif;?>
+  <input type=hidden name='ifCreate' value=0>
+  <?php endif;?>
+    <tr>
+   <td width=80></td>
+  <td>
+  <input type="submit" name="into_news" style="height:30px;" value="添加视频">
+    </td>
+    </tr>
+	</table>
+</form>
+<br>
+	</BODY></HTML>

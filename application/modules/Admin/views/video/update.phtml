@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>后台管理</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content=Alan name=Author><LINK rev=MADE
+href="mailto:haowubai@hotmail.com"><LINK href="/public/admin/stylesheets/private.css"
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.6000.16890" name=GENERATOR>
+<script type="text/javascript" src="/public/admin/javascripts/main.js"></script>
+</HEAD>
+<BODY>
+<TABLE class=navi cellSpacing=1 align=center border=0>
+  <TBODY>
+  <TR>
+    <TH>后台 >> 添加视频</TH></TR></TBODY></TABLE><BR>
+	<table border=0 cellspacing=1 align=center class=form>
+	<form enctype="multipart/form-data" action="/admin/video/update" method="post" >
+   <tr>
+   <td width=80>名称</td>
+  <td>
+  <select name='distance' id='distance' disabled='disabled'>
+      <option value=0 <?php if($videoFileInfo['distanceinfo']==0) echo "selected='selected'";?>>本地视频</option>
+      <option value=1 <?php if($videoFileInfo['distanceinfo']==1) echo "selected='selected'";?>>远程视频</option>
+      <option value=2 <?php if($videoFileInfo['distanceinfo']==2) echo "selected='selected'";?>>外网分享视频</option>
+ </select>&nbsp<span id='textfile'><input type="text" name="title"  value='<?php echo $videoFileInfo['ftitle'];?>' size=70 maxlength=180></span>
+  </select>
+    </td>
+    </tr>
+	 <tr>
+   <td width=80>分类</td>
+  <td>
+<select name='videoselect' id='videoselect'>
+    <option>分类</option>
+<?php foreach($classList as $item => $class){
+    $style = $class['disabled']?"style='background-color: green' disabled='disabled'":"";
+    $style.=$videoFileInfo['videoselect'] == $item?" selected='selected'":"";
+?>
+    <option value=<?php echo $item;?> <?php echo $style;?>><?php echo $class['name'];?></option>
+<?php } ?>
+</select>
+<span id='videonum'>
+集数(电视剧或多集电影添加必须填写): &nbsp&nbsp <input type=text name='videonum' value='<?php echo $videoFileInfo['videonum'];?>' onfocus="this.value='';" onblur="if(this.value=='') this.value=0;" >
+</span>
+    </td>
+    </tr>
+	<tr>
+ <td width=80>视频截图</td>
+  <td>
+<select name='videomplayer' id='videomplayer' onchange='shotselect();'>
+  <option value='1'>系统自动截图</option>
+  <option value='2'>手动上传图片</option> 
+ </select>
+ <span id='Screenshot'>截屏秒数:&nbsp&nbsp&nbsp<input type="text" name="mframe" id="mframe"></span>
+    </td>
+    </tr>
+	<tr>
+	<td width=80>描述图片</td>
+	<td><table width="100%">
+<tr><td class="embedded" colspan="2" align=left><input type="file" name="imgfile" />&nbsp;&nbsp;&nbsp;&nbsp;<b>
+<span id='uploadtext'></span></b></td></table>
+<div id='uploadcaution'><b><font color='red'>描述图片限制上传大小为2MB,允许的上传格式为jpeg, jpg, png, gif</font></b></div>
+</td>
+    </tr>
+	<tr>
+	<td width=80>豆瓣imdb值</td>
+	<td>
+	<input type=text name='imdb' id='imdb'>&nbsp	
+	<input type='button' value='获取信息' name='getInfo' onclick='getVideoInfo(this);'>
+	<br/>
+	<font color='red'><b>在此输入imdb值,并请立即点击获取信息等待信息获取后再做表单提交</b></font>
+	</td>
+	</tr>
+	<tr>
+	<td width=80>描述信息</td>
+  <td>
+<textarea id="edited" name="content" style="width:95%;height:280px;" ><?php echo $videoFileInfo['discription'];?></textarea>
+    </td>
+	</tr>
+ <input type=hidden name='ifcreate' value=1>
+    <tr>
+   <td width=80></td>
+  <td>
+  <input type="hidden" name="fid" value=<?php echo $videoFileInfo['fid'];?>>
+  <input type="submit" name="into_news" style="height:30px;" value="保存">
+    </td>
+    </tr>
+     </form>
+	</table>
+<br>
+<div style="display:none">
+<iframe src='admin_file_upload.php' name='upload' ></iframe>
+</div>
+	</BODY></HTML>

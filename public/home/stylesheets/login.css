@@ -1,0 +1,78 @@
+body {
+	background-color: #EFF2F0;
+}
+.red {
+	color: #ED0212;
+}
+.login {
+	margin-top: 100px;
+}
+.background {
+	text-align: center;
+}
+.background img {
+	width: 375px;
+}
+.signup {
+	width: 339px;
+	margin: auto;
+}
+.signup a {
+	display: inline-block;
+	padding: 7px 17px;
+	margin-left: 15px;
+	font-weight: bold;
+	color: #CC0000;
+	text-decoration: underline;
+	background-color: #ffffff;
+	border: 1px solid #D5EFCB;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+.login-form {
+	position: relative;
+	width: 370px;
+	margin: auto;
+}
+.login-form > div {
+	position: relative;
+}
+.login-form input {
+  height: 38px;
+  width: 305px;
+  margin: 5px 10px;
+
+}
+.login-form .title {
+	float: left;
+	margin-right: 15px;
+	line-height: 3;
+}
+.login-form i {
+	padding-right: 5px;
+	font-family: "SimSun";
+	color: #CC0000;
+}
+.login-form input[type="checkbox"] {
+	width: 0;
+	height: 0;
+	margin: 10px 4px 10px 47px;
+}
+.login-form span.right {
+	margin-top: 10px;
+}
+.login-form p.red {
+	position: absolute;
+	top: 6px;
+	right: -99px;
+	width: 99px;
+}
+.login-form .submit {
+	margin-left: 47px;
+}
+.login-form .button {
+	padding: 7px 20px 8px;
+	font-size: 15px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px
+}

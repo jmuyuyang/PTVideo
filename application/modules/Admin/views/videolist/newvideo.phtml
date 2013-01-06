@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>后台管理</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content=Alan name=Author>
+<LINK rev=MADE href="mailto:haowubai@hotmail.com">
+<LINK href="/public/admin/stylesheets/private.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.6000.16890" name=GENERATOR></HEAD>
+<BODY>
+<TABLE class=navi cellSpacing=1 align=center border=0>
+  <TBODY>
+  <TR>
+    <TH>后台 >> 新视频列表</TH></TR></TBODY></TABLE><BR>
+
+	<table border=0 cellspacing=1 align=center class=form>
+	<tr>
+		<th width='100'>文件列表</th><th>大小</th><th>传入目录</th><th width='100'>操作</th>
+	</tr>
+    <?php foreach($fileInfo as $file):?>
+	<tr>
+		<td width=60><?php echo $file['filename'];?></td><td width=20><?php echo $file['filesize'];?></td>
+		<td width=35><?php echo $dname;?></td><td width=40><a href='/admin/video/del?fid=<?php echo $file["fid"];?>'>删除</a> /<a href="/admin/upload?file=<?php echo $file['filename'];?>&fid=<?php echo $uid;?>&dname=<?php echo $dname;?>"> 添加</a></td>
+	</tr>
+	<?php endforeach;?>
+	</table>
+<br>
+	</BODY></HTML>

@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>后台管理</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content=Alan name=Author>
+<LINK rev=MADE href="mailto:haowubai@hotmail.com">
+<LINK href="/public/admin/stylesheets/private.css" type=text/css rel=stylesheet>
+<SCRIPT type="text/javascript" src="/public/admin/javascripts/main.js"></script>
+<META content="MSHTML 6.00.6000.16890" name=GENERATOR>
+</HEAD>
+<BODY>
+<TABLE class=navi cellSpacing=1 align=center border=0>
+  <TBODY>
+  <TR>
+    <TH colspan=2>后台 >> 视频列表 >> 视频分类---<?php echo $cname;?></TH></TR></TBODY>
+</TABLE>
+<br>
+<table border=0 cellspacing=1 align=center class="menu">
+	<form action='/admin/videos/search' method=post>
+<tr><td align=center>影视搜索</td><td align=center ><input type=text size=40 name='search'></td><td align=center><input type=submit value='搜索'></td>
+</tr>
+</form>
+</table>
+<br>
+<table border=0 cellspacing=1 align=center class="form">
+	<tr>
+		<th width='100'>选项</th><th width='100'>视频源文件</th><th>标题</th><th width='100' align="center">操作</th>
+	</tr>
+	<form action='/admin/addcollect' method="post" id='videoinput' name='videoinput'>
+    <?php foreach ($videoFiles as $fileInfo):?>
+	<tr>
+		<td align='center'><input type='checkbox' name='videoid[]' value='<?php echo $fileInfo["fid"];?>'></td><td><?php echo $fileInfo["fname"];?></td><td><?php echo $fileInfo["ftitle"];?></td><td align=right><a href='/admin/video/delete?fid=<?php echo $fileInfo["fid"];?>' onclick='return confirm("你确定要删除么")'>删除</a> /<a href='/admin/videoupdate/<?php echo $fileInfo["fid"];?>'> 修改</a>
+		<?php if(!$fieInfo['distanceinfo']):?>
+         /<a href='/admin/newvideo?uid=<?php echo $fileInfo["fid"];?>'> 添加</a>
+		<?php endif;?>
+		</td>
+	</tr>
+	 <?php endforeach;?>
+	 </table>
+	 <span id='intocollect' style="display:none;">
+	<table border=0 cellspacing=1 align=center class="form">
+	 <tr><td>合集名称</td><td><input type="text" name="collectname"></td></tr>
+	 <tr><td>合集信息</td><td>
+<textarea id="edited" name="collectcontent" style="width:95%;height:230px;" ></textarea>
+    </td></tr>
+	 </table>
+	 </span>
+	 <br />
+	 <center></center><div align='center'><input type="button" value="添加合集" name='intocollect' onclick='setcollect();'></div></center>
+	 </form>
+	<br>
+<br>
+	</BODY></HTML>

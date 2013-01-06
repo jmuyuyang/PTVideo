@@ -1,0 +1,252 @@
+<?php
+  $getAddTime = function ($addtime){
+      $addtime = time() - $addtime;
+      if ($addtime < 60 * 60) {
+          $timecaution = ceil($addtime / 60);
+          $addtimes = $timecaution . ' minutes ago';
+      } 
+      if ($addtime > 60 * 60 && $addtime < 24 * 60 * 60) {
+          $timecaution = ceil($addtime / (60 * 60));
+          $addtimes = $timecaution . ' hours ago';
+      } 
+      if ($addtime > 24 * 60 * 60) {
+          $timecaution = ceil($addtime / (60 * 60 * 24));
+          $addtimes = $timecaution . ' days ago';
+      } 
+      return $addtimes;
+  };
+?>
+  <header class="topbar">
+    <div class="logo">
+      <a href="http://pt.jmu.edu.cn"><img src="/public/home/images/logo.png" />有源网</a>
+    </div>
+    <div class="user">
+    <?php if($userInfo): ?>
+      <a href="#"><?php echo $userInfo['username'];?></a>
+      <?php if($userInfo['is_admin']): ?>
+      <a href="/manage/" class="quit">管理</a>
+      <?php endif;?>
+      <a href="/logout" class="quit">退出</a>
+    <?php else: ?>
+      <a href="/login" class="quit">登录</a>
+    <?php endif;?>
+    </div>
+    <nav class="top-nav">
+      <ul>
+      <?php $style = $current_class?'':'class="selected"';?>
+      <li <?php echo $style;?>><a href="/"><div class="icon-home"></div>有源主页</a></li>
+      <?php foreach ($classList as $class):
+        $style = ($current_class && $current_class == $class)?'class="selected"':'';
+      ?>
+        <li <?php echo $style;?>><a href="/?id=<?php echo $class;?>"><div class="icon-play-circle"></div><?php echo $classInfo[$class][0];?></a></li>
+      <?php endforeach;?>
+      </ul>
+    </nav>
+    <div class="search">
+      <input id="search" type="text" value="搜索视频"><a class="button" id="index_search"><div class="icon-search"></div>搜索</a>
+    </div>
+  </header>
+  <section class="container">
+    <div class="recblock row">
+      <h3>10大热播影视：</h3>
+      <div class="recslide">
+        <div class="recommended-list">
+        <a id="aLeft" class="icon-chevron-left" href="#"></a>
+        <a id="aRight" class="icon-chevron-right" href="#"></a>
+          <div id="panel" class="slide">
+            <div>
+              <div class="slide-list" id="slide">
+              <?php
+                $length = count($popularVideos); 
+                for($i = 0;$i<$length;$i+=2): 
+              ?>
+                <ul>
+                  <li>
+                    <div class="cover"><a href="/play/<?php echo $popularVideos[$i]['fid'];?>"><img src="/public/upload/thumb_img/<?php echo $popularVideos[$i]['uimgfile'];?>" /></a></div>
+                    <dl>
+                      <dt><a href="/play/<?php echo $popularVideos[$i]['fid'];?>"><?php echo $popularVideos[$i]['ftitle'];?></a></dt>
+                      <dd><a href="#"><?php echo substr($popularVideos[$i]['discription'],0, 20);?></a></dd>
+                    </dl>
+                  </li>
+                  <li>
+                    <div class="cover"><a href="/play/<?php echo $popularVideos[$i+1]['fid'];?>"><img src="/public/upload/thumb_img/<?php echo $popularVideos[$i+1]['uimgfile'];?>" /></a></div>
+                    <dl>
+                      <dt><a href="/play/<?php echo $popularVideos[$i+1]['fid'];?>"><?php echo $popularVideos[$i+1]['ftitle'];?></a></dt>
+                      <dd><a href="#"><?php echo substr($popularVideos[$i+1]['discription'],0, 20);?></a></dd>
+                    </dl>
+                  </li>
+                </ul>
+              <?php endfor;?>
+              </div>
+            </div>
+          </div>
+          <div id="dolist" class="dot-list">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="videos-collect">
+      <div class="title red">视频合集<a href="javascript:toggleSlie('-collect');" class="sh-block">收起</a></div>
+      <ul class="detail">
+      <?php foreach ($collectInfo as $item => $collect):?>
+        <li class="four columns">
+          <div class="video-pic">
+            <a href="/collect/<?php echo $collect['cid'];?>">
+              <img src="/public/upload/thumb_img/<?php echo $collect['image'];?>" /></a>
+          </div>
+          <div class="video-info">
+            <a href="/collect/<?php echo $collect['cid'];?>"><?php echo $collect['collectname'];?></a>
+             <div class="level">
+             </div>
+            <time class="added">Added: <?php echo $getAddTime($collect['addtime']);?></time>
+          </div>
+        </li>
+        <?php endforeach;?>
+      </ul>
+      <div class="watch-more">
+        <a href="/collects">查看更多 »</a>
+      </div>
+    </div>
+    <?php if($classVideos[3]):?>
+    <div class="row" id="videos0">
+      <div class="title red">最新电影<a href="javascript:toggleSlie(0);" class="sh-block">收起</a></div>
+      <ul class="detail">
+      <?php foreach ($classVideos[3] as $item => $video):?>
+        <li class="four columns">
+          <div class="video-pic">
+            <a href="/play/<?php echo $video['fid'];?>">
+              <img src="/public/upload/thumb_img/<?php echo $video['uimgfile'];?>" /></a>
+          </div>
+          <div class="video-info">
+            <a href="/play/<?php echo $video['fid'];?>"><?php echo $video['ftitle'];?></a>
+            <div class="level">
+              评级：
+            <?php
+              $score = (int)$video['score']/($video['votes']?:1);  
+              for($i = 0;$i<$score;$i++):
+            ?>
+              <img src="/public/home/images/star_red.gif">
+            <?php endfor;?>
+            <?php for($i = $score;$i<5;$i++):?>
+              <img src="/public/home/images/star_grey.gif">
+            <?php endfor;?>
+            </div>
+            <time class="added">Added: <?php echo $getAddTime($video['addtime']);?></time>
+          </div>
+        </li>
+        <?php endforeach;?>
+      </ul>
+      <div class="watch-more">
+      <?php if($classInfo[3][1]):?>
+        <a href="/list/3">查看更多 »</a>
+      <?php else: ?>
+        <a href="/?id=3">查看更多 »</a>
+      <?php endif;?>
+      </div>
+    </div>
+    <?php endif;?>
+    <div class="row">
+    <div class="six columns">
+    <?php 
+      $i = 0;
+      //unset($classVideos[3]);
+      $midLength = (int)count($classVideos)/2;
+      foreach ($classVideos as $class => $videos):
+        $index++;        
+    ?>
+    <div id="videos<?php echo $class;?>">
+        <div class="title red"><?php echo $classInfo[$class][0];?><a href="javascript:toggleSlie(<?php echo $class;?>);" class="sh-block">收起</a></div>
+        <ul class="detail">
+        <?php foreach ($videos as $video): ?>
+          <li>
+            <div class="video-pic">
+              <a href="/play/<?php echo $video['fid'];?>">
+                <img src="/public/upload/thumb_img/<?php echo $video['uimgfile'];?>" /></a>
+            </div>
+            <div class="video-info">
+              <a href="/play/<?php echo $video['fid'];?>"><?php echo $video['ftitle'];?></a>
+              <div class="level">
+                评级：
+              <?php
+                $score = (int)$video['score']/($video['votes']?:1);  
+                for($i = 0;$i<$score;$i++):
+              ?>
+                <img src="/public/home/images/star_red.gif">
+              <?php endfor;?>
+              <?php for($i = $score;$i<5;$i++):?>
+                <img src="/public/home/images/star_grey.gif">
+              <?php endfor;?>
+              </div>
+              <time class="added">Added: <?php echo $getAddTime($video['addtime']);?></time>
+            </div>
+          </li>
+        <?php endforeach;?>
+        </ul>
+        <div class="watch-more">
+        <?php if($classInfo[$class][1]):?>
+          <a href="/list/<?php echo $class;?>">查看更多 »</a>
+        <?php else: ?>
+          <a href="/?id=<?php echo $class;?>">查看更多 »</a>
+        <?php endif;?>
+        </div>
+    </div>
+    <?php if($index == $midLength): ?>
+    </div>
+    <div class="six columns">  
+    <?php endif;?>
+    <?php endforeach;?>
+    </div>
+    </div>
+  </section>
+  <div class="scrollto">
+  	<ul>
+  		<li class="orange"><a href="javascript:scrollTo(0);">最新</a></li>
+  		<li class="blue"><a href="javascript:scrollTo(1);">影视</a></li>
+  		<li class="green"><a href="javascript:scrollTo(2);">音乐</a></li>
+  	</ul>
+  </div>
+  <div class="gotop" onclick="scroll(0,0);">
+  	<div class="icon-arrow-up"></div>
+  	<span>返回顶部</span>
+  </div>
+  <footer>
+    <p>(c)<a href="http://pt.jmu.edu.cn">有源pt影视中心</a>2012-2013 <a href="#">管理员登录</a>Powered by <a href="#">集美大学网络性能测试小组</a></p>
+    <p>维护:集美大学网络开发小组&理学院网络协会</p>
+  </footer>
+
+
+  
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  
+  <script src="javascripts/jquery.js"></script>
+  
+  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="javascripts/jquery.placeholder.js"></script>
+  
+  <script src="javascripts/jquery.foundation.alerts.js"></script>
+  
+  -->
+  
+  <!-- Included JS Files (Compressed) -->
+  <script src="/public/home/javascripts/jquery.cycle.all.min.js"></script>
+  <script src="/public/home/javascripts/jsjquery.videos_menu.js"></script>
+  <script src="/public/home/javascripts/jsjquery.comments.js"></script>
+  

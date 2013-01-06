@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<head>
+
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>有源pt 影视中心</title>
+  
+  <!-- Included CSS Files (Uncompressed) -->
+  <!--
+  <link rel="stylesheet" href="../stylesheets/foundation.css">
+  -->
+ 
+  <!-- Included CSS Files (Compressed) -->
+  <link rel="stylesheet" href="/public/home/stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="/public/home/stylesheets/app.css">
+  <link rel="stylesheet" href="/public/home/font/css/font-awesome.css">
+
+  <script src="/public/home/javascripts/modernizr.foundation.js"></script>
+  <script src="/public/home/javascripts/jquery.js"></script>
+  <script src="/public/home/javascripts/foundation.min.js"></script>
+  <!-- Initialize JS Plugins -->
+  <script src="/public/home/javascripts/app.js"></script>
+  <script type='text/javascript'>
+    $(document).ready(function(){
+        $("#index_search").click(function(){
+          var keyw = $(this).parents(".search").find("#search").val();
+          if(keyw == "搜索视频" || keyw == ""){
+            location.href = "/search";
+          }else{
+            keyw = encodeURI(keyw);
+            location.href = "/svideo/"+keyw;
+          }
+        });
+
+        $("#search").blur(function(){
+          var sp_search = $(this).val();
+          if (sp_search=="") {
+            $(this).val("搜索视频");
+          }
+        }).focus(function(){
+          var sp_search = $(this).val();
+          if (sp_search=="搜索视频") {
+            $(this).val("");
+          }
+        });
+    });
+  </script>
+</head>
+<body>
+    <?php echo $content;?>
+</body>
+</html>

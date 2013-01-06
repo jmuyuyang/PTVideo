@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>PHP100_left</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8"><LINK
+href="/public/admin/stylesheets/private.css" type=text/css rel=stylesheet>
+<SCRIPT type="text/javascript" src="/public/admin/javascripts/main.js"></script>
+<META content="MSHTML 6.00.6000.16890" name=GENERATOR></HEAD>
+<BODY>
+<CENTER>
+
+<TABLE class=Menu cellSpacing=0>
+  <TBODY>
+  <TR>
+  	<th>欢迎进入视频管理中心</th>
+  	<TR><td>当前用户&nbsp&nbsp<?php echo $uname;?></td></TR>
+  <TR>
+    <TH onClick="javascript:menu_tree('left_1');" align=middle>≡ 基础操作 ≡</TH></TR>
+  <TR id=left_1>
+    <TD>
+      <TABLE width="100%">
+        <TBODY>
+        <TR>
+          <TD><IMG src="/public/admin/images/menu.gif" align=absMiddle border=0>&nbsp;
+		  <A onClick="return confirm('提示：您确定要退出系统吗？')" href="/admin/logout" target=_parent>退出后台</A>
+		  </TD>
+		  </TR>
+		  <TR>
+		   <TD><IMG src="/public/admin/images/menu.gif" align=absMiddle border=0>&nbsp;
+		  <A href="/"  target=_parent>返回系统首页</A>
+		  </TD>
+		</TR>
+	 </TBODY></TABLE>
+	 </TD></TR></TBODY></TABLE>
+
+<TABLE class=Menu cellSpacing=0 style="margin-top:5px">
+  <TBODY>
+  <TR>
+    <TH onClick="javascript:menu_tree('left_2');" align=middle>≡ 新闻内容 ≡</TH></TR>
+  <TR id=left_2>
+    <TD>
+      <TABLE width="100%">
+        <TBODY>
+		<TR>
+			<TD><IMG src="/public/admin/images/menu.gif" align=absMiddle border=0>&nbsp;
+		  <A href="/admin/videoclass" target=main>视频分类</A></TD>
+		</TR>
+        <TR>
+			<TD><IMG src="/public/admin/images/menu.gif" align=absMiddle border=0>&nbsp;
+		  <A href="/admin/videos/list" target=main>已添加视频列表</A></TD>
+		</TR>
+		    <TR>
+			<TD><IMG src="/public/admin/images/menu.gif" align=absMiddle border=0>&nbsp;
+		  <A href="/admin/newvideo" target=main>未添加视频列表</A></TD>
+		</TR>
+		    <TR>
+			<TD><IMG src="/public/admin/images/menu.gif" align=absMiddle border=0>&nbsp;
+		  <A href="/admin/uploadvideo" target=main>添加视频</A></TD>
+		</TR>
+	 </TBODY></TABLE>
+	 </TD></TR></TBODY></TABLE>
+
+<TABLE class=Menu cellSpacing=0 style="margin-top:5px">
+  <TBODY>
+  <TR>
+    <TH align=middle>〓 版本信息 〓</TH></TR>
+  <TR>
+    <TD align=middle><a href="http://pt.jmu.edu.cn/ptvideo.php" target="_blank">pt 影视中心</a></TD></TR>
+ </TBODY></TABLE></CENTER></BODY></HTML>

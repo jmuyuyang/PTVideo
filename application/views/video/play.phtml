@@ -1,0 +1,210 @@
+<?php
+  $getAddTime = function ($addtime){
+      $addtime = time() - $addtime;
+      if ($addtime < 60 * 60) {
+          $timecaution = ceil($addtime / 60);
+          $addtimes = $timecaution . ' minutes ago';
+      } 
+      if ($addtime > 60 * 60 && $addtime < 24 * 60 * 60) {
+          $timecaution = ceil($addtime / (60 * 60));
+          $addtimes = $timecaution . ' hours ago';
+      } 
+      if ($addtime > 24 * 60 * 60) {
+          $timecaution = ceil($addtime / (60 * 60 * 24));
+          $addtimes = $timecaution . ' days ago';
+      } 
+      return $addtimes;
+  };
+?>
+  <script type="text/javascript" src="/public/home/jwplayer/jwplayer.js"></script>
+  <header class="topbar">
+    <div class="logo">
+      <a href="http://pt.jmu.edu.cn"><img src="/public/home/images/logo.png" />有源网</a>
+    </div>
+    <div class="user">
+      <a href="#"><?php echo $userInfo['username'];?></a>
+      <?php if($userInfo['is_admin']): ?>
+      <a href="/manage/" class="quit">管理</a>
+      <?php endif;?>
+      <a href="/logout" class="quit">退出</a>
+    </div>
+    <nav class="top-nav">
+      <ul>
+      <?php $style = $current_class?'':'class="selected"';?>
+      <li <?php echo $style;?>><a href="/"><div class="icon-home"></div>有源主页</a></li>
+      <?php foreach ($classList as $class):
+        $style = ($current_class && $current_class == $class)?'class="selected"':'';
+      ?>
+        <li <?php echo $style;?>><a href="/?id=<?php echo $class;?>"><div class="icon-play-circle"></div><?php echo $classInfo[$class][0];?></a></li>
+      <?php endforeach;?>
+      </ul>
+    </nav>
+    <div class="search">
+      <input id="search" type="text" value="搜索视频"><a class="button" id="index_search"><div class="icon-search"></div>搜索</a>
+    </div>
+   
+  </script>
+  </header>
+  <section class="container">
+    <div class="videoplay row">
+      <div class="title red">Now Playing:<span><?php echo $videoInfo['ftitle'];?></span></div>
+      <?php if($videoInfo['distanceinfo'] == 2): ?>
+        <iframe height=498 width=870 frameborder=0 src="http://player.youku.com/embed/<?php echo $playConfig['file'];?>" allowfullscreen></iframe>
+      <?php else: ?>
+        <video id="player"></video>
+        <script type='text/javascript'>
+          jwplayer("player").setup({
+             playlist: [{
+                 sources: [
+                    {
+                      file: "<?php echo $playConfig['rtmp_server'];?>mp4:<?php echo $playConfig['file'].'.mp4';?>"
+                    },{
+                      file: "<?php echo $playConfig['http_server'].$playConfig['file'].'.mp4';?>.m3u8"
+                  }]
+            }],
+            height: 470,
+            primary: "flash",
+            width: 800
+        });
+        </script>
+      <?php endif;?>
+    </div>
+    <div class="row">
+      <div class="commentArea eight columns">
+        <div class="commentAreaBox">
+          <div id="wordlimit_new" class="wordlimit"><span class="wordenter" id="maxinput" style="color: rgb(144, 144, 144);">0</span><span id="maxvalue" class="wordenter">/200</span></div>
+          <div class="commentTextArea">
+            <textarea id="content" class="defaultext"></textarea>
+          </div>
+          <div class="clear"></div>
+          <ul class="rating nostar">
+            <?php
+              $score = $videoInfo['score']/($videoInfo['votes']?:1);
+              for($i = 0;$i<(int)$score;$i++):
+            ?>
+              <li class="red"><a href ="#" class="one" title="<?php echo $i+1;?>"><?php echo $i+1;?></a></li>
+            <?php endfor;?>
+            <?php for($i = $score;$i<5;$i++):?>
+              <li class="grey"><a href ="#" class="four" title="<?php echo $i+1;?>"><?php echo $i+1;?></a></li>
+            <?php endfor;?>
+            <span class="tip"><span id="score-avg"><?php echo number_format($score,2)?></span>分/<span id="vote-num"><?php echo $videoInfo['votes'];?></span>人参与</span>
+            <span class="tips"><?php if($voteScore){echo "您为此影片评分为".$voteScore."分";}?></span>
+          </ul>
+          <div class="submit">
+            <input type='hidden' class="videoclass" value="<?php echo $videoInfo["fid"];?>">
+            <a class="button small" id="submit_button">发表评论</a>
+          </div>
+        </div>
+        <div class="videoComment">
+          <h3>大众评论:</h3>
+          <div id="comments-list">
+          <?php foreach ($comments as $comment): ?>
+          <div class="comments" replay-id="<?php echo $comment['id'];?>">
+            <div class="viewer"><?php echo $comment['author'];?></div>
+            <div class="detail">
+              <div class="content">
+              <?php echo $comment['content'];?>
+              </div>
+              <time class="publish"><?php echo $getAddTime($comment['add_time']);?></time>
+            </div>
+            <span class="reply">回复</span>
+          </div>
+          <?php endforeach;?>
+          </div>
+          <?php if(count($comments) > 10):?>
+            <div class="watch-more"><a href="">查看更多回复 »</a></div>
+          <?php endif;?>
+          <div class="reply-box hidden">
+            <div class="wordlimit">
+              &nbsp<span class="wordenter" id="reply_maxinput">0</span><span class="wordenter">/200</span>
+            </div>
+            <div class="replyTextArea">
+              <textarea class="reply_content"></textarea>
+            </div>
+            <div class="action">
+              <span class="cancel button small">取消</span>
+              <span class="submit button small" id="submit_button">回复</span>
+            </div>
+          </div>
+          <div class="reply-succeed">
+            评论成功！
+          </div>
+        </div>
+      </div>
+      <aside class="four columns">
+        <?php if($videoInfo['videonum']): ?> 
+        <div class="playlist">
+          <div class="title red">剧情列表</div>
+          <?php 
+            for ($i=1; $i <= $videoInfo['videonum']; $i++): 
+              $style = ($videoInfo['play_index'] == $i)?'class="selected"':"";
+          ?>
+          <ul>
+            <li <?php echo $style;?>>
+              <a href="/play/<?php echo $videoInfo['fid']."?index=".$i;?>"><?php echo $i;?></a>
+            </li>
+          </ul>
+          <?php endfor;?>
+        </div>
+        <?php endif;?>
+        <div>
+          <div class="title red">Member video</div>
+          <ul>
+          <?php foreach ($memberVideos as $video): ?>
+            <li>
+              <div class="video-pic">
+                <a href="/play/<?php echo $video['fid'];?>">
+                  <img src="/public/upload/thumb_img/<?php echo $video['uimgfile'];?>" /></a>
+              </div>
+              <div class="video-info">
+                <a href="/play/<?php echo $video['fid'];?>"><?php echo $video['ftitle'];?></a>
+                <p>Added:<span class="times"><?php echo strftime("%Y-%m-%d",$video['addtime']);?></span></p>
+              </div>
+            </li>
+          <?php endforeach;?>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+  <div class="gotop" onclick="scroll(0,0);">
+    <div class="icon-arrow-up"></div>
+    <span>返回顶部</span>
+  </div>
+  <footer>
+    <p>(c)<a href="http://pt.jmu.edu.cn">有源pt影视中心</a>2011-2012 Powered by <a href="#">集美大学网络性能测试小组</a></p>
+    <p>维护:集美大学网络开发小组&理学院网络协会</p>
+  </footer>
+
+
+  
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  
+  <script src="javascripts/jquery.js"></script>
+  
+  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="javascripts/jquery.placeholder.js"></script>
+  
+  <script src="javascripts/jquery.foundation.alerts.js"></script>
+  
+  -->
+  <script src="/public/home/javascripts/jsjquery.comments.js"></script>
+  
