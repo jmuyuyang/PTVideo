@@ -88,7 +88,7 @@
               <li class="grey"><a href ="#" class="four" title="<?php echo $i+1;?>"><?php echo $i+1;?></a></li>
             <?php endfor;?>
             <span class="tip"><span id="score-avg"><?php echo number_format($score,2)?></span>分/<span id="vote-num"><?php echo $videoInfo['votes'];?></span>人参与</span>
-            <span class="tips"><?php if($voteScore){echo "您为此影片评分为".$voteScore."分";}?></span>
+            <span class="tips" has-score=<?php echo $voteScore?1:0;?>><?php if($voteScore){echo "您为此影片评分为".$voteScore."分";}?></span>
           </ul>
           <div class="submit">
             <input type='hidden' class="videoclass" value="<?php echo $videoInfo["fid"];?>">

@@ -15,6 +15,10 @@ $("#content").bind("blur keyup",function(){
 $("ul.rating li").click(function(){
 	var $parent = $(this).parents(".rating");
 	var $tips = $parent.find(".tips");
+	if(parseInt($tips.attr("has-score"))) {
+		alert("您已经评过分了,无法再次评分");
+		return;
+	}
 	$(this).removeClass("grey").addClass("red");
 	$(this).prevAll().removeClass("grey").addClass("red");
 	$(this).nextAll().removeClass("red").addClass("grey");
@@ -33,6 +37,7 @@ $("ul.rating li").click(function(){
 				return;
 			}
 			$tips.text("您给此资源的评分是："+title+"分");
+			$tips.attr("has-score",1);
 			var scoreAvg = parseFloat($("#score-avg").text());
 			var voteNum = parseInt($("#vote-num").text());
 			var newScore = new Number((scoreAvg*voteNum+title)/(voteNum+1));
