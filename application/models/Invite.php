@@ -18,7 +18,7 @@ class inviteModel extends Model{
 	function check($hash){
 		$invite = $this->find("first",array(
 			"where" => array("hash" => $hash),
-			"fields" => array("id","invite_user","hash","expire")
+			"fields" => array("id","invite_user","hash","used","expire")
 		));
 		if($invite){
 			$info = $invite->data();
@@ -31,6 +31,27 @@ class inviteModel extends Model{
 			return $info;
 		}
 		return array("errors" => "邀请码不存在");
+	}
+
+	function getUsed($id){
+		$invite = $this->find("first",array(
+			"where" => array("id" => $id),
+			'fields' => array("used")
+		));
+		if($invite){
+			$uid = $invite->data("uesd");
+			$user = $this->table("members")->find("first",array(
+				"where" => array("uid" => $uid),
+				"fields" => array("uid","username","addtime")
+			));
+			if($user) return $user->data();
+			else{
+				$this->errors("用户不存在");
+				return false;
+			}
+		}
+		$this->errors("邀请码不存在");
+		return false;
 	}
 
 	function setUsed($id,$uid){

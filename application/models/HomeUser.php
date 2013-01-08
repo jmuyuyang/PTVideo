@@ -43,6 +43,7 @@ class HomeUserModel extends Model{
 
 	public function signup($userInfo){
 		$userInfo['password'] = md5($userInfo['password']."video");
+		$userInfo['addtime'] = time();
 		$signup = $this->create($userInfo);
 		if($signup) return $signup->save();
 		return false;

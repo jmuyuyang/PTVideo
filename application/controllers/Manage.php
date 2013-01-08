@@ -44,6 +44,15 @@ class ManageController extends Controller{
 		else $this->response->setBody(json_encode(array('error' => 1)));
 	}
 
+	function inviteUserAction(){
+		if(!$this->_userInfo['is_admin']) $this->response->setBody(json_encode(array("error" => 1,"msg" => "权限不够")));
+		$id = $this->request->params['id'];
+		$invite = $this->loadModel("Invite");
+		$user = $invite->getUsed($id);
+		if(!$user) $this->response->setBody(json_encode(array('error' => 1,"msg" => $invite->errors())));
+		$this->response->setBody(json_encode($user));
+	}
+
 	function _getRequestUri(){
 		$uri = $this->request->getServer("REQUEST_URI");
 		if($pos = strpos($uri, "page")) $uri=substr($uri,0,$pos-1); 
