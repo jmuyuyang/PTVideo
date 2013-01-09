@@ -123,7 +123,7 @@ class Db_MySql_Adapter extends Db_DataBase {
 		return $id?:true;
 	}
 
-	function replace($data){
+	function replace($data,$options = array()){
 		$sql = $this->getQuery()->insert($data,'REPLACE');
 		return $this->exec($sql);
 	}
@@ -133,7 +133,7 @@ class Db_MySql_Adapter extends Db_DataBase {
 		return $this->exec($sql);
 	}
 
-	function update($data,$conditions,$options){
+	function update($data,$conditions,$options = array()){
 		$sql = $this->getQuery()->update($data,$conditions);
 		return $this->exec($sql);	
 	}

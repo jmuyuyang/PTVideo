@@ -35,7 +35,7 @@ class LoginPlugin extends Yaf_Plugin_Abstract{
 		$cookie = Util_Cookie::getInstance();
 		$uid = $cookie->huid;
 		$shell = $cookie->hshell;
-		if($userInfo = $user->checkLogin($uid,$shell)){
+		if($uid && $userInfo = $user->checkLogin($uid,$shell)){
 			$request->setCurrentUser($userInfo);
 			return true;
 		}
@@ -47,7 +47,7 @@ class LoginPlugin extends Yaf_Plugin_Abstract{
 		$session = Yaf_Session::getInstance();
 		$uid = $session->auid;
 		$shell = $session->ashell;
-		if($userInfo = $user->checkLogin($uid,$shell)){
+		if($uid && $userInfo = $user->checkLogin($uid,$shell)){
 			$request->setCurrentUser($userInfo);
 			return true;
 		}

@@ -15,7 +15,7 @@ class HomeUserModel extends Model{
 		if($uid != ''){
 			$userInfo = $this->find('first',array(
 				'where' => array('uid' => $uid),
-				'fields' => array('uid','username','password','is_admin')
+				'fields' => array('uid','username','password','is_admin','new_msg')
 			))->data();
 			if($userInfo){
 				if($shell == $this->getShell($userInfo['username'],$userInfo['password'])){
