@@ -36,6 +36,7 @@ class UserController extends Controller{
  			$signId = $this->user->signup($userInfo);
 			if($signId) {
 				$this->loadModel("Invite")->setUsed($info['id'],$signId);
+				$this->_sendNotify($signId,"welcome to PTVideo");
 				$this->sendMsg('/','注册成功',0);
 			}
 			else $this->sendMsg('/signup','注册失败 '.$this->user->errors(),0);	
@@ -55,6 +56,14 @@ class UserController extends Controller{
 		$method = $type."Check";
 		$existed = $this->user->{$method}($val);
 		$this->response->setBody(json_encode(array("existed" => $existed)));
+	}
+
+	private function _sendNotify($send_user,$content){
+		$msg = $this->loadModel("Message");
+		$msgInfo['send_user'] = $send_user;
+		$msgInfo['create_username'] = "system";
+		$msgInfo['content'] = $content;
+		return $msg->send($msgInfo,array());
 	}
 }
 ?>

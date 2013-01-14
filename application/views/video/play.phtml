@@ -111,8 +111,8 @@
           </div>
           <?php endforeach;?>
           </div>
-          <?php if(count($comments) > 10):?>
-            <div class="watch-more"><a href="">查看更多回复 »</a></div>
+          <?php if(count($comments) >= 10):?>
+            <div class="watch-more" current-id=<?php echo $comments[9]["id"];?>><a href="">查看更多回复 »</a></div>
           <?php endif;?>
           <div class="reply-box hidden">
             <div class="wordlimit">

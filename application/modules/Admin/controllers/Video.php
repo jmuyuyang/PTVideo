@@ -70,7 +70,6 @@ class VideoController extends Controller{
 	}
 
 	private function _add(){
-		print_r($this->request->data);
 		$file = $this->request->data['file'];
 		if($this->request->data['ifCreate']){
 			$title = $this->request->data['title'];
@@ -101,7 +100,7 @@ class VideoController extends Controller{
 			if($vid && $_FILES['imgfile']['name'] != ''){
 				return $this->_uploadDiscribeImg($vid,$_FILES['imgfile']);
 			}
-			return false;
+			return $vid;
 		}else{
 			$fid = $this->request->data['fid'];
 			$tmpnum = $this->request->data['tmpnum']?:0;
