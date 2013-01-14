@@ -39,7 +39,7 @@ class inviteModel extends Model{
 			'fields' => array("used")
 		));
 		if($invite){
-			$uid = $invite->data("uesd");
+			$uid = $invite->data("used");
 			$user = $this->table("members")->find("first",array(
 				"where" => array("uid" => $uid),
 				"fields" => array("uid","username","addtime")
@@ -61,7 +61,7 @@ class inviteModel extends Model{
 	function getList($uid){
 		$invite = $this->find("all",array(
 			"where" => array("invite_user" => $uid),
-			"fields" => array("hash","expire","used")
+			"fields" => array("id","hash","expire","used")
 		));
 		return $invite?$invite->data():array();
 	}

@@ -50,6 +50,7 @@ class ManageController extends Controller{
 		$invite = $this->loadModel("Invite");
 		$user = $invite->getUsed($id);
 		if(!$user) $this->response->setBody(json_encode(array('error' => 1,"msg" => $invite->errors())));
+		$user['addtime'] = strftime("%Y-%m-%d",$user['addtime']);
 		$this->response->setBody(json_encode($user));
 	}
 

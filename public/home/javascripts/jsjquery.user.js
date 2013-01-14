@@ -32,6 +32,27 @@ $(".power").submit(function(){
     return false;
 });
 
+$(".outime .detail").click(function(){
+	var $parent = $(this).parents("div.invite");
+	var $tips = $parent.find(".tip");
+	if($tips.find(".user").text() != ""){
+		$tips.slideToggle();
+	}else{
+		$.ajax({
+			cache:false,
+			type:"GET",
+			url:"/inviteu/"+$tips.find(".tip-id").val(),
+			dataType:"json",
+			error:function(){alert("设置失败")},
+			success:function(data){
+				$tips.find(".user").text(data.username);
+				$tips.find(".usetime").text(data.addtime);
+				$tips.slideToggle();
+			}
+		});
+	}
+});
+
 $("#power .button").click(function(){
 	var u_type = $("#power .mold").val();
 	var search = encodeURI($("#power .usersearch input").val());

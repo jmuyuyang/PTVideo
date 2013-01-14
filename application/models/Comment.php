@@ -13,8 +13,10 @@ class CommentModel extends Model{
 	}
 
 	function get($vid,$id = 0){
+		$where = array('fid' => $vid);
+		if($id) $where["id"] = array('lt' => $id);
 		$comment = $this->find('all',array(
-			'where' => array('fid' => $vid,'id' => array('gt' => $id)),
+			'where' => $where,
 			'fields' => array('id','fid','uid','author','content','add_time','reply'),
 			'order' => array('add_time' => 'DESC'),
 			'limit' => 10

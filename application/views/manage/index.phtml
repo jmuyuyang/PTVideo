@@ -98,13 +98,19 @@ $paginated = function ($page,$num,$size){
         <?php foreach ($inviteList as $invite):?>
           <p><span><?php echo $invite['hash'];?></span>
           <?php if($invite['used']):?>
-            <time class="">已被使用</time>
-          <?php elseif($invite['expire'] < time()): ?>
-            <time class="">已过期</time>
-          <?php else: ?>
-            <time class="">过期时间：<strong><?php echo strftime("%Y-%m-%d",$invite['expire']);?></strong></time>
-          <?php endif;?>
+            <time class="outime">已使用<span class="detail">使用详情<i class="icon-sort-down"></i></span>
+              <div class="tip hidden">
+                <input type='hidden' value="<?php echo $invite['id'];?>" class='tip-id'>
+                用户名：<div class="user"></div>
+                注册时间：<div class="usetime"></div>
+              </div>
+            </time>
           </p>
+          <?php elseif($invite['expire'] < time()): ?>
+            <time class="">已过期</time></p>
+          <?php else: ?>
+            <time class="">过期时间：<strong><?php echo strftime("%Y-%m-%d",$invite['expire']);?></strong></time></p>
+          <?php endif;?>
         <?php endforeach;?>
       </div>
     </div>

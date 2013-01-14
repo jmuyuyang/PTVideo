@@ -18,7 +18,8 @@ class MessageModel extends Model{
 			"where" => array("send_user" => $uid),
 			"fields" => array("content","create_user","create_username","extends","create_time"),
 			"limit" => $limit,
-			"offset" => $offset
+			"offset" => $offset,
+			"order" => array("create_time" => "DESC")
 		));
 		return $msg?$msg->data():array();
 	}

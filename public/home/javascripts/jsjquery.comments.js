@@ -69,6 +69,19 @@ $(".submit a").click(function(){
         }
     });
 });
+$(".watch-more a").click(function(){
+	var cid = $(".watch-more").attr("current-id");
+	$.ajax({
+		cache:false,
+		type:"GET",
+		url:"/gcomment/"+vid+"?cid="+cid,
+		dataType:"json",
+		success:function(data){
+			
+		}
+	})
+
+})
 $(".reply").click(function(){
 	var $reply_parent = $(this).parents("div.comments");
 	if(!$reply_parent.children().hasClass("reply-box")){

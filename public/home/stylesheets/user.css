@@ -91,7 +91,36 @@
 .existing {
 	margin-top: 20px;
 }
-.existing span {
+.existing > div {
+	margin: 20px 0;
+}
+.existing .code {
 	margin-right: 30px;
 	color: #cc0000;
+}
+.outime span {
+	margin-left: 27px;
+	color: #4126EF;
+	cursor: pointer;
+}
+.tip {
+	margin-top: 10px;
+	width:350px;
+	height:35px;
+	padding-left: 2px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 5px;
+}
+.tip > div {
+	display: inline-block;
+	margin: 5px 15px;
+	color: #000000;
+}
+.tip span {
+	margin: 0;
+	color: #cc0000;
+}
+.hidden {
+	display: none;
 }
