@@ -11,13 +11,17 @@ $paginated = function ($page,$num,$size){
     <div class="logo">
       <a href="http://pt.jmu.edu.cn"><img src="/public/home/images/logo.png" />有源网</a>
     </div>
-    <div class="user">
-      <a href="#"><?php echo $userInfo['username'];?></a>
+    <ul class="user">
+      <li><a href="#"><?php echo $userInfo['username'];?></a></li>
+      <li><a href="/message<?php if($userInfo['new_msg']) echo '?update=1';?>"><i class="icon-envelope-alt"></i></a></li>
       <?php if($userInfo['is_admin']): ?>
-      <a href="/manage/" class="quit">管理</a>
+      <li><a href="/manage/">管理</a></li>
       <?php endif;?>
-      <a href="/logout" class="quit">退出</a>
-    </div>
+      <li><a href="/logout">退出</a></li>
+    </ul>
+    <?php if($userInfo['new_msg']): ?>
+    <div class="tips"><a href="/message?update=1">你有<?php echo $userInfo['new_msg'];?>条新消息</a></div>
+    <?php endif;?>
     <nav class="top-nav">
       <ul>
       <?php $style = $current_class?'':'class="selected"';?>

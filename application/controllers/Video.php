@@ -61,8 +61,8 @@ class VideoController extends Controller{
 		$reply = $this->request->query['reply']?:0;
 		$comment = $this->loadModel("Comment");
 		$addComment = $comment->add(compact('fid','uid','author','content','reply'));
-		$time = strftime("%Y-%m-%d",time());
-		if($addComment) $this->response->setBody(json_encode(compact("author","content","time")));
+		$add_time = strftime("%Y-%m-%d",time());
+		if($addComment) $this->response->setBody(json_encode(compact("author","content","add_time")));
 		else $this->response->setBody(json_encode(array('operation' => 'failed')));
 	}
 

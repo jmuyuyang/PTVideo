@@ -1,0 +1,65 @@
+ <link rel="stylesheet" href="/public/home/stylesheets/msg.css">
+
+ <header class="topbar">
+    <div class="logo">
+      <a href="http://pt.jmu.edu.cn"><img src="/public/home/images/logo.png" />有源网</a>
+    </div>
+    <ul class="user">
+      <li><a href="#"><?php echo $userInfo['username'];?></a></li>
+      <li><a href="/message"><i class="icon-envelope-alt"></i></a></li>
+      <?php if($userInfo['is_admin']): ?>
+      <li><a href="/manage/">管理</a></li>
+      <?php endif;?>
+      <li><a href="/logout">退出</a></li>
+    </ul>
+    <nav class="top-nav">
+      <ul>
+      <?php $style = $current_class?'':'class="selected"';?>
+      <li <?php echo $style;?>><a href="/"><div class="icon-home"></div>有源主页</a></li>
+      <?php foreach ($classList as $class):
+        $style = ($current_class && $current_class == $class)?'class="selected"':'';
+      ?>
+        <li <?php echo $style;?>><a href="/?id=<?php echo $class;?>"><div class="icon-play-circle"></div><?php echo $classInfo[$class][0];?></a></li>
+      <?php endforeach;?>
+      </ul>
+    </nav>
+    <div class="search">
+      <input id="search" type="text" value="搜索视频"><a class="button" id="index_search"><div class="icon-search"></div>搜索</a>
+    </div>
+  </header>
+ <section class="container">
+    <div class="row messages">
+      <h1>消息<span class="num">(共<?php echo count($messages);?>个)</span></h1>
+      <div class="content">
+        <ul class="messagelist">
+        <?php foreach ($messages as $id => $message): ?>
+          <li>
+            <div class="title red"><?php echo $message['create_username'];?></div>
+            <div class="content">
+              <ul class="informlist" get-data=0 action-type='fold'>
+                <li class="action">
+                  <p class="informtxt"><?php echo $message['content'];?><time>(<?php echo strftime("%m-%d %H:%I",$message['create_time']);?>)</time></p>
+                </li>
+              </ul>
+            </div>
+            <?php if($message['msg_count'] > 1): ?>
+            <div class="expand">
+              <a class="button" href="#" msg-type=<?php echo $id;?>>
+                <span>查看余下<?php echo $message['msg_count']-1;?>条消息</span><i class="icon-caret-down"></i></a>
+            </div>
+            <?php endif;?>
+          </li>
+        <?php endforeach; ?>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <div class="gotop" onclick="scroll(0,0);">
+  	<div class="icon-arrow-up"></div>
+  	<span>返回顶部</span>
+  </div>
+  <footer>
+    <p>(c)<a href="http://pt.jmu.edu.cn">有源pt影视中心</a>2012-2013 <a href="#">管理员登录</a>Powered by <a href="#">集美大学网络性能测试小组</a></p>
+    <p>维护:集美大学网络开发小组&理学院网络协会</p>
+  </footer>
+   <script type="text/javascript" src='/public/home/javascripts/jsjquery.msg.js'></script>

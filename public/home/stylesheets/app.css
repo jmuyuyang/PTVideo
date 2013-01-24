@@ -24,16 +24,44 @@ body {
 }
 .topbar .user {
 	float: right;
-	margin: 7px 30px 0 0;
-	font-size: 16px;
+	margin: 7px 20px 0 0;
+}
+.topbar .user li {
+	display: inline-block;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
 }
 .topbar .user a {
-	color: #52CDF2;
+	padding: 0 5px;
+	font-size: 16px;
+	color: #eaeafe;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
 }
 .topbar .user .quit {
 	margin-left: 10px;
 	text-decoration: underline;
 	color: #ee0000;
+}
+.user li:hover {
+	background: #9823E0;
+}
+.user li:hover a {
+	color: #ffffff;
+}
+.topbar .tips {
+	display: none;
+	position: absolute;
+	top: 70px;
+	right: 40px;
+	width: 190px;
+	padding: 7px 0 10px;
+	background: #ffffff;
+	border: 1px solid #a5a5a5;
+	-webkit-border-radius: 0px 0px 2px 2px;
+	border-radius: 0px 0px 2px 2px; 
+	-webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2); 
 }
 .topbar .logo {
 	float: left;

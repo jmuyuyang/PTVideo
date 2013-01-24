@@ -1,10 +1,17 @@
 <?php
 class LoginPlugin extends Yaf_Plugin_Abstract{
 
+	public $redirect = true;
+
+	function routerShutdown(Yaf_Request_Abstract $request , Yaf_Response_Abstract $response){
+		$controller = $request->getControllerName();
+		$action = $request->getActionName();
+		if($controller == "Index" && $action == "index") $this->redirect = false;
+	}
+
 	function preDispatch(Yaf_Request_Abstract $request , Yaf_Response_Abstract $response){
 		$module = strtolower($request->getModuleName());
 		$controller = $request->getControllerName();
-		$action = $request->getActionName();
 		$method = "_".$module."LoginCheck";
 		if($controller != "User"){
 			if(!$check = $this->{$method}($request)) {
@@ -23,9 +30,7 @@ class LoginPlugin extends Yaf_Plugin_Abstract{
 			exit();
 		}
 		if($request->getModuleName() == "Index") {
-			if($request->getActionName() != "index"){
-				$response->setRedirect('/login?url='.$request->getRequestUri());
-			}
+			if($this->redirect) $response->setRedirect('/login?url='.$request->getRequestUri());
 		}
 		else echo "<script type='text/javascript'>parent.location.href='/admin/login'</script>";
 	}

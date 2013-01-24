@@ -11,12 +11,41 @@ class HomeUserModel extends Model{
 		'email' => array('email','message' => '请输入正确的email')
 	);
 
+	public function add($userInfo){
+		$userInfo['password'] = md5($userInfo['password']."video");
+		$userInfo['addtime'] = time();
+		$signup = $this->create($userInfo);
+		if($signup) return $signup->save();
+		return false;
+	}
+
+	public function modifyPass($uid,$passnw,$passw){
+		$user = $this->find('first',array(
+			'where' => array('uid' => $uid,'password' => md5($passw)),
+			'fields' => array('uid','username','password')
+		));
+		if($user){
+			$user->password = md5($passnw);
+			return $user->save('update');
+		}
+		return false;
+	}
+
+	public function modify($uid,$data){
+		return $this->update($data,array("uid" => $uid));
+	}
+
+	public function profile($uid){
+		$profile = $this->find("first",array(
+			"where" => array("uid" => $uid),
+			"fields" => array("uid","username","password","is_admin","new_msg","email")
+		));
+		return $profile?$profile->data():array();
+	} 
+
 	public function checkLogin($uid,$shell) {
 		if($uid != ''){
-			$userInfo = $this->find('first',array(
-				'where' => array('uid' => $uid),
-				'fields' => array('uid','username','password','is_admin','new_msg')
-			))->data();
+			$userInfo = $this->profile($uid);
 			if($userInfo){
 				if($shell == $this->getShell($userInfo['username'],$userInfo['password'])){
 					unset($userInfo['password']);
@@ -40,26 +69,6 @@ class HomeUserModel extends Model{
 		}
 		return false;
 	}
-
-	public function signup($userInfo){
-		$userInfo['password'] = md5($userInfo['password']."video");
-		$userInfo['addtime'] = time();
-		$signup = $this->create($userInfo);
-		if($signup) return $signup->save();
-		return false;
-	}
-
-	public function updatePass($name,$passnw,$passw){
-		$user = $this->find('first',array(
-			'where' => array('username' => $name,'password' => md5($passw)),
-			'fields' => array('uid','username','password')
-		));
-		if($user){
-			$user->password = md5($passnw);
-			return $user->save('update');
-		}
-		return false;
-	} 
 
 	public function userCheck($val){
 		$user = $this->find("first",array(

@@ -63,7 +63,7 @@ $(".submit a").click(function(){
 		error: function(){alert("评论失败");},
 		success: function (data) {
 			$(".commentAreaBox #content").val("");
-			$("#comments-list").prepend("<div class='comments'><div class='viewer'>"+data.author+"</div><div class='detail'><div class='content'>"+data.content+"</div><time class='publish'>"+data.time+"</time></div><span class='reply'>回复</span></div>");
+			$("#comments-list").prepend("<div class='comments'><div class='viewer'>"+data.author+"</div><div class='detail'><div class='content'>"+data.content+"</div><time class='publish'>"+data.add_time+"</time></div><span class='reply'>回复</span></div>");
 			$(".reply-succeed").animate({top: "70px",opacity:"1"},1000)
 			.animate({top:"-=40px",opacity:"0"},2000);
         }
@@ -71,18 +71,48 @@ $(".submit a").click(function(){
 });
 $(".watch-more a").click(function(){
 	var cid = $(".watch-more").attr("current-id");
+	var vid = $(".videoclass").val();
+	function comptime(beginTime){
+		var endTime = new Date().getTime(); 
+  	  	var secondNum = parseInt((endTime-beginTime*1000)/1000);//计算时间戳差值    
+   		if(secondNum>=0&&secondNum<60){ 
+        	return secondNum+' seconds ago'; 
+    	} 
+    	else if (secondNum>=60&&secondNum<3600){ 
+        	var nTime=parseInt(secondNum/60); 
+        	return nTime+' miniutes ago'; 
+    	} 
+    	else if (secondNum>=3600&&secondNum<3600*24){ 
+        	var nTime=parseInt(secondNum/3600); 
+        	return nTime+' hours ago'; 
+    	} 
+    	else{ 
+        	var nTime = parseInt(secondNum/86400); 
+        	return nTime+' days ago'; 
+    	} 
+	} 
+
 	$.ajax({
 		cache:false,
 		type:"GET",
 		url:"/gcomment/"+vid+"?cid="+cid,
 		dataType:"json",
+		error: function(){alert("评论失败");},
 		success:function(data){
-			
+			var preDiv = "<div class='more-comment' ></div>"
+			for(var idx in data){
+				$("#comments-list").append("<div class='comments'><div class='viewer'>"+data[idx].author+"</div><div class='detail'><div class='content'>"+data[idx].content+"</div><time class='publish'>"+comptime(data[idx].add_time)+"</time></div><span class='reply'>回复</span></div>");
+			}
+			if(data.length < 10){
+				$(".watch-more").hide();
+			}else{
+				$(".watch-more").attr("current-id",data[data.length-1].id);
+			}
 		}
-	})
-
+	});
+	return false;
 })
-$(".reply").click(function(){
+$(".reply").live("click",function(){
 	var $reply_parent = $(this).parents("div.comments");
 	if(!$reply_parent.children().hasClass("reply-box")){
 		var reply = $(this).parents(".videoComment").find(".reply-box.hidden").clone();

@@ -33,7 +33,7 @@ class UserController extends Controller{
 			$info = $this->loadModel("Invite")->check($invitenumber);
 			if($info['errors']) $this->sendMsg("/signup",$info['errors']);
 			$userInfo['invite_user'] = $info['invite_user'];
- 			$signId = $this->user->signup($userInfo);
+ 			$signId = $this->user->add($userInfo);
 			if($signId) {
 				$this->loadModel("Invite")->setUsed($info['id'],$signId);
 				$this->_sendNotify($signId,"welcome to PTVideo");
@@ -59,11 +59,8 @@ class UserController extends Controller{
 	}
 
 	private function _sendNotify($send_user,$content){
-		$msg = $this->loadModel("Message");
-		$msgInfo['send_user'] = $send_user;
-		$msgInfo['create_username'] = "system";
-		$msgInfo['content'] = $content;
-		return $msg->send($msgInfo,array());
+		$add = $this->loadModel("Message")->send($send_user,0,array("content" => $content));
+		$update = $this->loadModel("HomeUser")->update(array("new_msg" => array("inc" => 1)),array("uid" => $send_user));
 	}
 }
 ?>
