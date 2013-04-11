@@ -5,7 +5,7 @@
     $(document).foundationAlerts();
     $(document).foundationAccordion();
     $(document).tooltips();
-    $('input, textarea').placeholder();   
+   
     $(document).foundationButtons();  
     $(document).foundationNavigation();
     $(document).foundationCustomForms();

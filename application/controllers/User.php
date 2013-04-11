@@ -9,7 +9,7 @@ class UserController extends Controller{
 	function profile(){
 		if($data = $this->request->data){
 			$modify = $this->loadModel("User")->modifyProfile($this->_userInfo['uid'],$data);
-			$this->sendMsg(null,'更新成功',0);
+			//$this->sendMsg(null,'更新成功',0);
 		}
 		$this->getView()->assign("profile",$this->_userInfo);
 	}
