@@ -63,7 +63,7 @@ class UserModel extends Model{
 
 	public function checkLogin($uid,$shell) {
 		if($uid != ''){
-			$userInfo = $this->profile($uid);
+			$userInfo = $this->get($uid);
 			if($userInfo){
 				if($shell == $this->_getShell($userInfo['username'],$userInfo['password'])){
 					unset($userInfo['password']);

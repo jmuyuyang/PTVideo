@@ -30,9 +30,9 @@ class IndexController extends Controller{
 		$cid = $this->request->params['cid'];
 		$page = $this->request->query['page']?:1;
 		$video = $this->loadModel("Video");
-		$class = $this->_getClass($cid);
 		$offset = $this->pagenator($video->getVideoNum($cid),20,$page);
 		$videos = $video->getVideosByClass($cid,20,$offset);
+		$class = $this->loadModel("Videoclass")->getParentClass($cid)?:$cid;
 		$this->getView()->assign('current_class',$class);
 		$this->getView()->assign('videos',$videos);
 	}
@@ -65,10 +65,5 @@ class IndexController extends Controller{
  			}
 		}
 		return $classVideos;
-	}
-
-	private function _getClass($class){
-		$videoClass = $this->loadModel("Videoclass");
-		return $videoClass->getParentClass($class)?:$class;
 	}
 }
