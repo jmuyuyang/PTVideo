@@ -36,7 +36,7 @@ class VideoclassController extends Controller{
 	function _del(){
 		$id = $this->request->query['id'];
 		$class = $this->loadModel('Videoclass');
-		$del = $class->del($id);
+		$del = $class->remove($id);
 		if($del){
 			$this->sendMsg('/admin/videoclass/?update=1','删除成功');
 		}

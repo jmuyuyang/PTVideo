@@ -52,7 +52,7 @@ class LoginController extends Controller{
 	}
 
 	private function _sendNotify($send_user,$content){
-		$add = $this->loadModel("Message")->send($send_user,0,array("content" => $content));
+		$add = $this->loadModel("Message")->add($send_user,0,array("content" => $content));
 		$update = $this->loadModel("User")->updateNewMsg($send_user);
 	}
 }

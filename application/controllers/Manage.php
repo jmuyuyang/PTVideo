@@ -18,7 +18,7 @@ class ManageController extends Controller{
 		$uri = $this->_getRequestUri();
 		$offset = $this->pagenator($user->find("all")->rowCount(),20,$page);
 		$userList = $user->getList($search,$is_admin,20,$offset);
-		$inviteList = $this->loadModel("Invite")->getList($this->_userInfo['uid']);
+		$inviteList = $this->loadModel("Invite")->get($this->_userInfo['uid']);
 		$this->getView()->assign(compact("uri","userList","inviteList"));
 	}
 
@@ -46,7 +46,7 @@ class ManageController extends Controller{
 		if(!$this->_userInfo['is_admin']) $this->response->setBody(json_encode(array("error" => 1,"msg" => "权限不够")));
 		$id = $this->request->params['id'];
 		$invite = $this->loadModel("Invite");
-		$user = $invite->getUsed($id);
+		$user = $invite->usedInfo($id);
 		if(!$user['errors']) $this->response->setBody(json_encode(array('error' => 1,"msg" => $user['errors'])));
 		else{
 			$user['addtime'] = strftime("%Y-%m-%d",$user['addtime']);

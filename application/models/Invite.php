@@ -15,25 +15,15 @@ class inviteModel extends Model{
 		return $this->insert($data);
 	}
 
-	function check($hash){
-		$invite = $this->find("first",array(
-			"where" => array("hash" => $hash),
-			"fields" => array("id","invite_user","hash","used","expire")
+	function get($uid){
+		$invite = $this->find("all",array(
+			"where" => array("invite_user" => $uid),
+			"fields" => array("id","hash","expire","used")
 		));
-		if($invite){
-			$info = $invite->data();
-			if($info['used']){
-				return array("errors" => "邀请码已被使用");
-			}
-			if($info['expire'] < time()){
-				return array("errors" => "邀请码已过期");
-			}
-			return $info;
-		}
-		return array("errors" => "邀请码不存在");
+		return $invite?$invite->data():array();
 	}
 
-	function getUsed($id){
+	function usedInfo($id){
 		$invite = $this->find("first",array(
 			"where" => array("id" => $id),
 			'fields' => array("used")
@@ -52,16 +42,26 @@ class inviteModel extends Model{
 		return array("errors" => "邀请码不存在");
 	}
 
-	function setUsed($id,$uid){
-		return $this->update(array("used" => $uid),array("id" => $id));
+	function check($hash){
+		$invite = $this->find("first",array(
+			"where" => array("hash" => $hash),
+			"fields" => array("id","invite_user","hash","used","expire")
+		));
+		if($invite){
+			$info = $invite->data();
+			if($info['used']){
+				return array("errors" => "邀请码已被使用");
+			}
+			if($info['expire'] < time()){
+				return array("errors" => "邀请码已过期");
+			}
+			return $info;
+		}
+		return array("errors" => "邀请码不存在");
 	}
 
-	function getList($uid){
-		$invite = $this->find("all",array(
-			"where" => array("invite_user" => $uid),
-			"fields" => array("id","hash","expire","used")
-		));
-		return $invite?$invite->data():array();
+	function setUsed($id,$uid){
+		return $this->update(array("used" => $uid),array("id" => $id));
 	}
 }
 

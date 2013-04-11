@@ -7,7 +7,7 @@ class MessageModel extends Model{
 		'key' => 'mid'
 	);
 
-	function send($send_user,$create_user,$msgInfo){
+	function add($send_user,$create_user,$msgInfo){
 		$mid = $this->getType($send_user,$create_user);
 		$msgInfo['mid'] = $mid;
 		$msgInfo['create_time'] = time();
@@ -15,31 +15,6 @@ class MessageModel extends Model{
 		$update = $this->addTypeNum();
 		if($add && $update) return true;
 		return false;
-	}
-
-	function getType($send_user,$create_user){
-		$msg_type = $this->find("first",array(
-			"where" => array('send_user' => $send_user,"create_user" => $create_user),
-			"fields" => array("id")
-		));
-		return $msg_type?$msg_type->data("id"):$this->addType(compact("send_user","create_user"));
-	}
-
-	function get($uid){
-		$msg = $this->find("all",array(
-			"where" => array("send_user" => $uid),
-			"fields" => array("id","create_user","create_username","msg_count")
-		));
-		return $msg?$msg->data():array();
-	}
-
-	function getContent($mid,$type='first'){
-		$msg = $this->table("ptv_msg_content")->find($type,array(
-			"where" => array("mid" => $mid),
-			"fields" => array("content","create_time"),
-			"order" => array("create_time" => "DESC")
-		));
-		return $msg?$msg->data():array();
 	}
 
 	function addType($data){
@@ -58,4 +33,31 @@ class MessageModel extends Model{
 	function addTypeNum($tid){
 		$this->update(array("msg_count" => array("inc" => 1)),array("id" => $tid));
 	}
+
+	function get($uid){
+		$msg = $this->find("all",array(
+			"where" => array("send_user" => $uid),
+			"fields" => array("id","create_user","create_username","msg_count")
+		));
+		return $msg?$msg->data():array();
+	}
+
+	function getType($send_user,$create_user){
+		$msg_type = $this->find("first",array(
+			"where" => array('send_user' => $send_user,"create_user" => $create_user),
+			"fields" => array("id")
+		));
+		return $msg_type?$msg_type->data("id"):$this->addType(compact("send_user","create_user"));
+	}
+
+	function getContent($mid,$type='first'){
+		$msg = $this->table("ptv_msg_content")->find($type,array(
+			"where" => array("mid" => $mid),
+			"fields" => array("content","create_time"),
+			"order" => array("create_time" => "DESC")
+		));
+		return $msg?$msg->data():array();
+	}
+
+	
 }

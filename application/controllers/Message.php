@@ -38,7 +38,7 @@ class MessageController extends Controller{
 	}
 
 	private function _sendMsg($send_user,$create_user,$content){
-		$add = $this->loadModel("Message")->send($send_user,$create_user,array("content" => $content));
+		$add = $this->loadModel("Message")->add($send_user,$create_user,array("content" => $content));
 		$update = $this->loadModel("User")->updateNewMsg($send_user);
 		if($add && $update) return true;
 		return false;

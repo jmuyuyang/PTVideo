@@ -17,7 +17,7 @@ class VideoclassModel extends Model{
 		return false;
 	}
 
-	function del($id){
+	function remove($id){
 		$del = $this->delete(array('cid' => $id));
 		if($del){
 			$delCountInfo = $this->table('ptv_video_sum')->delete(array('type' => $id));
