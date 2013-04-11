@@ -8,8 +8,8 @@ class Cache_Memcache{
 			$this->_link = new Memcached();
 			$this->_link->addServers($config['server']);
 		}else{
-			$this->_link = new Memcached();
-			$this->_link->addServer($config['host'],$config['port']); 
+			$this->_link = new Memcache();
+			$this->_link->connect($config['host'],$config['port']); 
 		}
 	}
 

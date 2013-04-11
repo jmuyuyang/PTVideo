@@ -21,22 +21,20 @@ class IndexController extends Controller{
 		$cid = $this->request->params['cid'];
 		$video = $this->loadModel('Video');
 		$page = $this->request->query['page']?:1;
-		$offset = ($page-1)*20;
-		$pages = ceil($video->getCollectNum()/20);
+		$offset = $this->pagenator($video->getCollectNum(),20,$page);
 		$collects = $video->getCollects(20,$offset);
-		$this->getView()->assign(compact('page','pages','collects'));
+		$this->getView()->assign('collects',$collects);
 	}
 	
 	function classVideoListAction(){
 		$cid = $this->request->params['cid'];
 		$page = $this->request->query['page']?:1;
-		$offset = ($page-1)*20;
 		$video = $this->loadModel("Video");
-		$pages = ceil($video->getVideoNum($cid)/20);
-		$videos = $video->getVideosByClass($cid,20,$offset);
 		$class = $this->_getClass($cid);
+		$offset = $this->pagenator($video->getVideoNum($cid),20,$page);
+		$videos = $video->getVideosByClass($cid,20,$offset);
 		$this->getView()->assign('current_class',$class);
-		$this->getView()->assign(compact('page','pages','videos'));
+		$this->getView()->assign('videos',$videos);
 	}
 
 	function collectVideoListAction(){

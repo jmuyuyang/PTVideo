@@ -11,7 +11,10 @@ class MessageModel extends Model{
 		$mid = $this->getType($send_user,$create_user);
 		$msgInfo['mid'] = $mid;
 		$msgInfo['create_time'] = time();
-		return $this->table("ptv_msg_content")->insert($msgInfo);
+		$add = $this->table("ptv_msg_content")->insert($msgInfo);
+		$update = $this->addTypeNum();
+		if($add && $update) return true;
+		return false;
 	}
 
 	function getType($send_user,$create_user){
@@ -20,19 +23,6 @@ class MessageModel extends Model{
 			"fields" => array("id")
 		));
 		return $msg_type?$msg_type->data("id"):$this->addType(compact("send_user","create_user"));
-	}
-
-	function addType($data){
-		if($data['create_user']){
-			$user = $this->table("members")->find("first",array(
-				"where" => array('uid' => $uid),
-				"fields" => array("username")
-			));
-			$data['create_username'] = $user->data("username");
-		}else{
-			$data['create_username'] = "system";
-		}
-		return $this->insert($data);
 	}
 
 	function get($uid){
@@ -52,7 +42,20 @@ class MessageModel extends Model{
 		return $msg?$msg->data():array();
 	}
 
-	function setRead($uid){
-		$this->table("members")->update(array("new_msg" => 0),array("uid" => $uid));
+	function addType($data){
+		if($data['create_user']){
+			$user = $this->table("members")->find("first",array(
+				"where" => array('uid' => $uid),
+				"fields" => array("username")
+			));
+			$data['create_username'] = $user->data("username");
+		}else{
+			$data['create_username'] = "system";
+		}
+		return $this->insert($data);
+	}
+
+	function addTypeNum($tid){
+		$this->update(array("msg_count" => array("inc" => 1)),array("id" => $tid));
 	}
 }

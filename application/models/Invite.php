@@ -46,12 +46,10 @@ class inviteModel extends Model{
 			));
 			if($user) return $user->data();
 			else{
-				$this->errors("用户不存在");
-				return false;
+				return array("errors" => "用户不存在");
 			}
 		}
-		$this->errors("邀请码不存在");
-		return false;
+		return array("errors" => "邀请码不存在");
 	}
 
 	function setUsed($id,$uid){

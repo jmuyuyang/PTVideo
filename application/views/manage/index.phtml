@@ -21,7 +21,7 @@ $paginated = function ($page,$num,$size){
       <li><a href="/logout">退出</a></li>
     </ul>
     <?php if($userInfo['new_msg']): ?>
-    <div class="tips"><a href="/message?update=1">你有<?php echo $userInfo['new_msg'];?>条新消息</a></div>
+    <div class="tips"><a href="/message">你有<?php echo $userInfo['new_msg'];?>条新消息</a></div>
     <?php endif;?>
     <nav class="top-nav">
       <ul>
@@ -98,7 +98,7 @@ $paginated = function ($page,$num,$size){
 	    <div class="invitecode" id="invitecode">
         <input type="text"><a class="button">获取邀请码</a>&nbsp<span class='prompt'></span>
 	     </div>
-      <div class="existing">
+      <div class="existing hidden">
         <p>用户已获取邀请码：<p>
         <?php foreach ($inviteList as $invite):?>
           <p><span><?php echo $invite['hash'];?></span>
@@ -159,9 +159,6 @@ $paginated = function ($page,$num,$size){
   -->
   
   <!-- Included JS Files (Compressed) -->
-  <script src="/public/home/javascripts/jquery.js"></script>
-  <script src="/public/home/javascripts/foundation.min.js"></script>
+
   <script src="/public/home/javascripts/jsjquery.user.js"></script>
   
-  <!-- Initialize JS Plugins -->
-  <script src="/public/home/javascripts/app.js"></script>

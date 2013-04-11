@@ -5,16 +5,12 @@ class Request extends Yaf_Request_Http{
 	public $query = null;
 	public $params = null;
 	public $userInfo = array();
-
+	
 	public function __construct(){
 		parent::__construct();
 		$this->setPost();
 		$this->setQuery();
 		$this->setParams();
-	}
-
-	public function setCurrentUser($userInfo){
-		$this->userInfo = $userInfo;
 	}
 
 	public function setPost(){
@@ -45,5 +41,6 @@ class Request extends Yaf_Request_Http{
 			});
 		}
 		return $params;
-	}			
+	}
+
 }

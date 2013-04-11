@@ -1,61 +1,46 @@
 <?php
 class LoginPlugin extends Yaf_Plugin_Abstract{
 
-	public $redirect = true;
-
-	function routerShutdown(Yaf_Request_Abstract $request , Yaf_Response_Abstract $response){
-		$controller = $request->getControllerName();
-		$action = $request->getActionName();
-		if($controller == "Index" && $action == "index") $this->redirect = false;
-	}
-
 	function preDispatch(Yaf_Request_Abstract $request , Yaf_Response_Abstract $response){
-		$module = strtolower($request->getModuleName());
+		$check = $this->_loginCheck($request);
+		$this->_setRedirect($request,$check);
+	}
+
+	private function _setRedirect($request,$check){
 		$controller = $request->getControllerName();
-		$method = "_".$module."LoginCheck";
-		if($controller != "User"){
-			if(!$check = $this->{$method}($request)) {
-				$this->_setRedirect($request,$response);
-			}
-		}else{
-			if($check = $this->{$method}($request)){
-				$response->setRedirect("/");
-			}
+		if($request->getRequestUri() == '/') return;
+		if($controller == "Login"){
+			if($check) $request->setParam("redirect","/");
+			return;
 		}
+		if(!$check) $request->setParam("redirect",'/login?url='.$request->getRequestUri());
 	}
 
-	private function _setRedirect($request,$response){
-		if($request->isXmlHttpRequest()) {
-			$response->setBody(json(array('error' => 'true')));
-			exit();
+	private function _loginCheck($request){
+		$module = strtolower($request->getModuleName());
+		list($uid,$shell) = $this->{"_".$module."Check"}();
+		if($uid){
+			$user = new UserModel();
+			$userInfo = $user->checkLogin($uid,$shell);
+			if($userInfo){
+				$request->userInfo = $userInfo;
+				return true;
+			}
 		}
-		if($request->getModuleName() == "Index") {
-			if($this->redirect) $response->setRedirect('/login?url='.$request->getRequestUri());
-		}
-		else echo "<script type='text/javascript'>parent.location.href='/admin/login'</script>";
+		return false;
 	}
 
-	private function _indexLoginCheck($request){
-		$user = new HomeUserModel();
+	private function _indexCheck(){
 		$cookie = Util_Cookie::getInstance();
 		$uid = $cookie->huid;
 		$shell = $cookie->hshell;
-		if($uid && $userInfo = $user->checkLogin($uid,$shell)){
-			$request->setCurrentUser($userInfo);
-			return true;
-		}
-		return false;
+		return array($uid,$shell);
 	}
 
-	private function _adminLoginCheck($request){
-		$user = new AdminUserModel();
+	private function _adminCheck(){
 		$session = Yaf_Session::getInstance();
 		$uid = $session->auid;
 		$shell = $session->ashell;
-		if($uid && $userInfo = $user->checkLogin($uid,$shell)){
-			$request->setCurrentUser($userInfo);
-			return true;
-		}
-		return false;
+		return array($uid,$shell);
 	}
 }

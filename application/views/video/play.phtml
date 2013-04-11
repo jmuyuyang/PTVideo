@@ -16,7 +16,8 @@
       return $addtimes;
   };
 ?>
-  <script type="text/javascript" src="/public/home/jwplayer/jwplayer.js"></script>
+  <script type="text/javascript" src="/public/home/media/mediaelement-and-player.min.js"></script>
+  <link rel="stylesheet" href="/public/home/media/mediaelementplayer.css" />
   <header class="topbar">
     <div class="logo">
       <a href="http://pt.jmu.edu.cn"><img src="/public/home/images/logo.png" />有源网</a>
@@ -30,7 +31,7 @@
       <li><a href="/logout">退出</a></li>
     </ul>
     <?php if($userInfo['new_msg']): ?>
-    <div class="tips"><a href="/message?update=1">你有<?php echo $userInfo['new_msg'];?>条新消息</a></div>
+    <div class="tips"><a href="/message">你有<?php echo $userInfo['new_msg'];?>条新消息</a></div>
     <?php endif;?>
     <nav class="top-nav">
       <ul>
@@ -52,26 +53,33 @@
   <section class="container">
     <div class="videoplay row">
       <div class="title red">Now Playing:<span><?php echo $videoInfo['ftitle'];?></span></div>
-      <?php if($videoInfo['distanceinfo'] == 2): ?>
-        <iframe height=498 width=870 frameborder=0 src="http://player.youku.com/embed/<?php echo $playConfig['file'];?>" allowfullscreen></iframe>
-      <?php else: ?>
-        <video id="player"></video>
-        <script type='text/javascript'>
-          jwplayer("player").setup({
-             playlist: [{
-                 sources: [
-                    {
-                      file: "<?php echo $playConfig['rtmp_server'];?>mp4:<?php echo $playConfig['file'].'.mp4';?>"
-                    },{
-                      file: "<?php echo $playConfig['http_server'].$playConfig['file'].'.mp4';?>.m3u8"
-                  }]
-            }],
-            height: 470,
-            primary: "flash",
-            width: 800
-        });
+        <video width="830" height="460" id="player" controls="controls" preload="none" style='margin-left:400px'>
+          <source src="<?php echo $playConfig['http_server'].$playConfig['file'].'.mp4';?>" type="video/mp4" title="mp4">
+        </video>
+         <script type="text/javascript">
+          function video_supported() {
+            return !!document.createElement('video').canPlayType; // boolean
+          }
+          if(video_supported()){
+              $("#player").mediaelementplayer();
+          }else{
+              $.getScript("/public/home/jwplayer/jwplayer.js",function(){
+                  jwplayer("player").setup({
+                    playlist: [{
+                    sources: [
+                      {
+                        file: "<?php echo $playConfig['rtmp_server'];?>mp4:<?php echo $playConfig['file'].'.mp4';?>"
+                      },{
+                        file: "<?php echo $playConfig['http_server'].$playConfig['file'].'.mp4';?>.m3u8"
+                    }]
+                    }],
+                    height: 470,
+                    primary: "flash",
+                    width: 800
+                  });
+              });     
+          }
         </script>
-      <?php endif;?>
     </div>
     <div class="row">
       <div class="commentArea eight columns">

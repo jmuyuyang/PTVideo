@@ -1,5 +1,5 @@
 <?php
-class HomeUserModel extends Model{
+class UserModel extends Model{
 	protected static $_adapter = 'MySql';
 	protected static $_meta = array(
 		'connection' => 'default',
@@ -11,30 +11,6 @@ class HomeUserModel extends Model{
 		'email' => array('email','message' => '请输入正确的email')
 	);
 
-	public function add($userInfo){
-		$userInfo['password'] = md5($userInfo['password']."video");
-		$userInfo['addtime'] = time();
-		$signup = $this->create($userInfo);
-		if($signup) return $signup->save();
-		return false;
-	}
-
-	public function modifyPass($uid,$passnw,$passw){
-		$user = $this->find('first',array(
-			'where' => array('uid' => $uid,'password' => md5($passw)),
-			'fields' => array('uid','username','password')
-		));
-		if($user){
-			$user->password = md5($passnw);
-			return $user->save('update');
-		}
-		return false;
-	}
-
-	public function modify($uid,$data){
-		return $this->update($data,array("uid" => $uid));
-	}
-
 	public function profile($uid){
 		$profile = $this->find("first",array(
 			"where" => array("uid" => $uid),
@@ -43,11 +19,35 @@ class HomeUserModel extends Model{
 		return $profile?$profile->data():array();
 	} 
 
+	public function add($userInfo){
+		$userInfo['password'] = md5($userInfo['password']."video");
+		$userInfo['addtime'] = time();
+		$signup = $this->create($userInfo);
+		if($signup) return $signup->save();
+		return false;
+	}
+
+	public function modifyPass($uid,$passw,$passnw){
+		$user = $this->find('first',array(
+			'where' => array('uid' => $uid),
+			'fields' => array('uid','username','password')
+		));
+		if($user && $user->password == md5($passw."video")){
+			$user->password = md5($passnw);
+			return $user->save('update');
+		}
+		return false;
+	}
+
+	public function modifyProfile($uid,$data){
+		return $this->update($data,array("uid" => $uid));
+	}
+
 	public function checkLogin($uid,$shell) {
 		if($uid != ''){
 			$userInfo = $this->profile($uid);
 			if($userInfo){
-				if($shell == $this->getShell($userInfo['username'],$userInfo['password'])){
+				if($shell == $this->_getShell($userInfo['username'],$userInfo['password'])){
 					unset($userInfo['password']);
 					return $userInfo;
 				}
@@ -56,31 +56,24 @@ class HomeUserModel extends Model{
 		return false;
 	} 
 
-	public function login($name,$password){
-		$name = str_replace(" ", "", $name);
+	public function login($name,$password,$is_admin = 0){
+		$where = array('username' => $name);
+		if($is_admin) $where['is_admin'] = 1;
 		$userInfo = $this->find('first',array(
-			'where' => array('username' => $name)
+			'where' => $where
 		));
 		if($userInfo){
 			$userInfo = $userInfo->data();
 			if(md5($password."video") == $userInfo['password']){
-				return array($userInfo['uid'],$this->getShell($name,$userInfo['password']));
+				return array($userInfo['uid'],$this->_getShell($name,$userInfo['password']));
 			}
 		}
 		return false;
 	}
 
-	public function userCheck($val){
+	public function userCheck($where){
 		$user = $this->find("first",array(
-			'where' => array('username' => $val),
-			'fields' => array('uid')
-		));
-		return $user?true:false;
-	}
-
-	public function emailCheck($val){
-		$user = $this->find("first",array(
-			'where' => array('email' => $val),
+			'where' => $where,
 			'fields' => array('uid')
 		));
 		return $user?true:false;
@@ -108,7 +101,15 @@ class HomeUserModel extends Model{
 		return $this->update(array('is_admin' => $power),array('uid' => $uid));
 	}
 
-	public function getShell($name,$pass){
-		return md5($name.$pass.'videoHome');
+	public function updateNewMsg($uid){
+		$this->update(array("new_msg" => array("inc" => 1)),array("uid" => $uid));
+	}
+
+	public function resetNewMsg($uid){
+		$this->update(array("new_msg" => 0),array("uid" => $uid));
+	}
+
+	private function _getShell($name,$pass){
+		return md5($name.$pass."video");
 	}
 }

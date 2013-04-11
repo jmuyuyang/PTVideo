@@ -94,7 +94,7 @@ class Db_MySql_Adapter extends Db_DataBase {
 		}
 		if(!$this->_query instanceof PDOStatement){
 			$errors = $this->_db->errorInfo();
-			throw new QueryException($errors[2]);
+			throw new Exception($errors[2]);
 		}
 		return new Db_MySql_Result($this->_query); 
 	}

@@ -35,6 +35,7 @@ $(".power").submit(function(){
 $(".outime .detail").click(function(){
 	var $parent = $(this).parents("div.invite");
 	var $tips = $parent.find(".tip");
+	alert($parent.html());
 	if($tips.find(".user").text() != ""){
 		$tips.slideToggle();
 	}else{

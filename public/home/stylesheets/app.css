@@ -50,12 +50,11 @@ body {
 	color: #ffffff;
 }
 .topbar .tips {
-	display: none;
 	position: absolute;
 	top: 70px;
 	right: 40px;
 	width: 190px;
-	padding: 7px 0 10px;
+	padding: 7px 10px 10px;
 	background: #ffffff;
 	border: 1px solid #a5a5a5;
 	-webkit-border-radius: 0px 0px 2px 2px;
@@ -129,33 +128,6 @@ body {
 .topbar input + a {
 	margin-left: 5px;
 	padding: 5px;
-}
-
-.msg{
-	position: fixed;
-	right: 45%;
-	top: 45px;
-	width:200px;
-	font-size: 20px;
-	font-weight: bold;
-	color: #cc0000;
-	text-align: center;
-	background-color: #FFDDAA;
-	border: 1px solid #abab55;
-	opacity: 1;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-}
-.msg-content{
-	padding:10px;
-}
-.msg .title{
-	padding: 6px;
-	font-size: 15px;
-	text-align:left;
-	color: #ffffff;
-	background-color: #7F0116;
-	border-radius: 3px;
 }
 .container {
 	margin-top: 70px;
@@ -288,6 +260,7 @@ body {
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
 }
+
 .container .commentAreaBox p {
 	float: right;
 	margin: 0 20px;

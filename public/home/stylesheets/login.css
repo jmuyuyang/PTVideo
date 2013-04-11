@@ -76,3 +76,26 @@ body {
 	-webkit-border-radius: 5px;
 	border-radius: 5px
 }
+
+.msg{
+	font-size: 20px;
+	font-weight: bold;
+	color: #cc0000;
+	text-align: center;
+	background-color: #FFDDAA;
+	border: 1px solid #abab55;
+	opacity: 1;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+.msg .content{
+	padding:10px;
+}
+.msg .title{
+	padding: 6px;
+	font-size: 15px;
+	text-align:left;
+	color: #ffffff;
+	background-color: #7F0116;
+	border-radius: 3px;
+}

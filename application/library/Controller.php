@@ -12,7 +12,7 @@ class Controller extends Yaf_Controller_Abstract{
 		$this->request = $this->getRequest();
 		$this->response = $this->getResponse();
 		$this->app_config = Yaf_Registry::get("config")->application;
-		$this->_userInfo = $this->request->userInfo;
+		$this->auth();
 	}
 
 	public function loadModel($model,$params = array()){
@@ -32,10 +32,16 @@ class Controller extends Yaf_Controller_Abstract{
 		}
 	}
 
-	public function sendMsg($url, $msg = '操作已成功！',$pause = 1){
+	public function sendMsg($msg = '操作已成功！',$url = null,$pause = 0){
 		$this->getView()->display($this->getView()->getScriptPath().'/common/msg.phtml',array('url' => $url,'msg' => $msg));
 		if($pause) exit();
 	}	
+
+	protected function pagenator($sum,$limit,$page){
+		$pages = ceil($sum/$limit);
+		$this->getView()->assign(compact("page","pages"));
+		return $limit*($page-1);
+	}
 
 	protected function setLayout(){
 		$this->loadClassConfig();
@@ -44,5 +50,17 @@ class Controller extends Yaf_Controller_Abstract{
 		$this->getView()->assign("classInfo",$this->classConfig['classInfo']);
 		$this->getView()->assign("classList",$this->classConfig['classes'][0]);
 		$this->getView()->assign("userInfo",$this->_userInfo);
-	}	
+	}
+
+	protected function auth(){
+		if($url = $this->request->getParam("redirect")){
+			if($this->request->getModuleName() == "Admin"){
+				echo "<script type='text/javascript'>parent.location.href='/admin".$url."'</script>";
+			}else{
+				$this->redirect($url);
+			}
+			return;
+		}
+		$this->_userInfo = $this->request->userInfo;
+	}
 }

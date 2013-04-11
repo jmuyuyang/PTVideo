@@ -11,7 +11,7 @@ class VideoController extends Controller{
 				'where' => array('fid' => $fid),
 				'fields' => array('ftitle','videonum')
 			));
-			if(!$info) $this->sendMsg("/admin/newvideo","无法为该影视添加视频");
+			if(!$info) $this->sendMsg("无法为该影视添加视频","/admin/newvideo",1);
 			$this->getView()->assign(array("dname" => $info->data('ftitle'),"videonum" => $info->data('videonum')));
 		}
 		$this->getView()->assign(array('classList' => $classList,'file' => $file,'fid' => $fid));
@@ -22,10 +22,10 @@ class VideoController extends Controller{
 		if($action){
 			$method = "_".$action;
 			if($this->{$method}()){
-				$this->sendMsg("/admin/videoclass","操作成功");
+				$this->sendMsg("操作成功","/admin/videoclass",1);
 			}
 		}
-		$this->sendMsg("/admin/videoclass","操作失败");
+		$this->sendMsg("操作失败","/admin/videoclass",1);
 	}
 
 	function updateAction(){
@@ -50,9 +50,9 @@ class VideoController extends Controller{
 		if(is_array($videoId)){
 			$videoCollect = serialize($videoId);
 			$add = $video->addCollect(array('collectname'=> $collectName,'contents'=> $collectContent,'videoid' => $videoCollect));
-			if($add) $this->sendMsg('/admin/videoclass','合集信息添加成功');
+			if($add) $this->sendMsg('合集信息添加成功','/admin/videoclass',1);
 		}
-		$this->sendMsg('/admin/videoclass','添加失败');
+		$this->sendMsg('添加失败','/admin/videoclass',1);
 	}
 
 	function grabDoubanAction(){

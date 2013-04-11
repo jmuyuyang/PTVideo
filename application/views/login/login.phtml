@@ -13,12 +13,13 @@
   -->
   
   <!-- Included CSS Files (Compressed) -->
-  <link rel="stylesheet" href="/public/home/stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="/public/foundation/stylesheets/foundation.min.css">
   <link rel="stylesheet" href="/public/home/stylesheets/login.css">
-  <link rel="stylesheet" href="/public/home/font/css/font-awesome.css">
+  <link rel="stylesheet" href="/public/foundation/font/css/font-awesome.css">
 
-  <script src="/public/home/javascripts/modernizr.foundation.js"></script>
+  <script src="/public/foundation/javascripts/modernizr.foundation.js"></script>
   <script src="/public/home/javascripts/jquery.js"></script>
+  <script src="/public/foundation/javascripts/foundation.min.js"></script>
   <script src="/public/home/javascripts/jsjquery.verification.js"></script>
 </head>
 <body>
@@ -46,44 +47,19 @@
       </div>
     </form>
   </div>
-
-
-
-
-  <!-- Included JS Files (Uncompressed) -->
-  <!--
-  
-  <script src="javascripts/jquery.js"></script>
-  
-  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
-  
-  <script src="javascripts/jquery.foundation.forms.js"></script>
-  
-  <script src="javascripts/jquery.foundation.reveal.js"></script>
-  
-  <script src="javascripts/jquery.foundation.orbit.js"></script>
-  
-  <script src="javascripts/jquery.foundation.navigation.js"></script>
-  
-  <script src="javascripts/jquery.foundation.buttons.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tabs.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tooltips.js"></script>
-  
-  <script src="javascripts/jquery.foundation.accordion.js"></script>
-  
-  <script src="javascripts/jquery.placeholder.js"></script>
-  
-  <script src="javascripts/jquery.foundation.alerts.js"></script>
-  
-  -->
-  
-  <!-- Included JS Files (Compressed) -->
-  <script src="/public/home/javascripts/jquery.js"></script>
-  <script src="/public/home/javascripts/foundation.min.js"></script>
-  
   <!-- Initialize JS Plugins -->
   <script src="/public/home/javascripts/app.js"></script>
+  <?php if($errors):?>
+    <div id="msg-tip" class="reveal-modal tiny">
+      <div class="msg">
+        <div class="title">提示</div>
+        <div class="content"><?php echo $errors;?></div>
+      </div>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+    <script type='text/javascript'>
+      $("#msg-tip").reveal("open");
+    </script>
+  <?php endif;?>
 </body>
 </html>
