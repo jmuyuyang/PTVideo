@@ -77,7 +77,7 @@ class VideoController extends Controller{
 			$videoSelect = $this->request->data['videoselect'];
 			$videonum = $this->request->data['videonum'];
 			if(!$title || !$content || !$videoSelect){
-				$this->sendMsg("/admin/newvideo", "请输入完整信息");
+				$this->sendMsg("请输入完整信息",'admin/newvideo',1);
 			}
 			$fClass = $this->loadModel('Videoclass')->getParentClass($videoSelect);
 			$moveDir = $this->app_config->video_dir;
@@ -116,7 +116,7 @@ class VideoController extends Controller{
 		$videonum = $this->request->data['videonum'];
 		$videoSelect = $this->request->data['videoselect'];
 		if(!$title || !$content || $videoSelect == 0){
-			$this->sendMsg('/admin/newvideo','请输入完整信息');
+			$this->sendMsg('请输入完整信息','admin/newvideo',1);
 		}
 		if(!$this->request->data['distance']){
 			//$this->_movieScreen($this->request->data['mType'], $file);
@@ -172,7 +172,7 @@ class VideoController extends Controller{
 			$orginFile = $this->app_config->tmp_video_dir.stripslashes($file);
 			if(!$videonum){
 				$videotype = $this->_checkType($file);
-				if(!$videotype) $this->sendMsg('/admin/newvideo','文件格式不正确');
+				if(!$videotype) $this->sendMsg('文件格式不正确','admin/newvideo',1);
 				if(!$ifCreate) $moveFile.=".".$videotype;
 			}
 			//$videokbs = $this->_movieScreen($this->request->data['mType'], $filename);
@@ -227,7 +227,7 @@ class VideoController extends Controller{
 			'thumbDir' => $this->app_config->upload_thumb_img
 		));
 		$uploadFile = $this->_upload($file);
-		if(!$uploadFile) $this->sendMsg('/admin/newvideo','文件上传失败:'.$this->upload->errors());
+		if(!$uploadFile) $this->sendMsg('文件上传失败:'.$this->upload->errors(),'admin/newvideo',1);
 		$uploadFile->adapter('thumb',array(120,165))->saveThumb();
 		$uploadInfo = $uploadFile->getUploadFileInfo();
 		$video = $this->loadModel("Video");

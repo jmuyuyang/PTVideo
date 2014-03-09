@@ -30,7 +30,7 @@ class LoginController extends Controller{
 		if($username && $password && $email){
 			$userInfo = compact('username','password','email');
 			$info = $this->loadModel("Invite")->check($invitenumber);
-			if($info['errors']) $this->sendMsg("/signup",$info['errors']);
+			if($info['errors']) $this->sendMsg($info['errors'],"/signup");
 			$userInfo['invite_user'] = $info['invite_user'];
  			$signId = $this->user->add($userInfo);
 			if($signId) {

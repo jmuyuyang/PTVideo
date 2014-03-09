@@ -38,9 +38,9 @@ class VideoclassController extends Controller{
 		$class = $this->loadModel('Videoclass');
 		$del = $class->remove($id);
 		if($del){
-			$this->sendMsg('/admin/videoclass/?update=1','删除成功');
+			$this->sendMsg('删除成功','/admin/videoclass/?update=1',1);
 		}
-		$this->sendMsg('/admin/videoclass','删除失败');
+		$this->sendMsg('删除失败','admin/videoclass',1);
 	}
 
 	private function _add(){
@@ -50,9 +50,9 @@ class VideoclassController extends Controller{
 		$class = $this->loadModel('Videoclass');
 		if($name){
 			$class->add(array('name' => $name,'ifprivate' => $ifprivate,'parentid' => $parentid));
-			$this->sendMsg('/admin/videoclass/?update=1','成功添加分类');
+			$this->sendMsg('成功添加分类','/admin/videoclass/?update=1',1);
 		}
-		$this->sendMsg('/admin/videoclass/','添加类别失败');
+		$this->sendMsg('添加类别失败','admin/videoclass',1);
 	}
 
 	private function _update(){
@@ -61,9 +61,9 @@ class VideoclassController extends Controller{
 		$class = $this->loadModel('Videoclass');
 		if($id && $name){
 			$update = $class->update(array('name' => $name),array('cid' => $id));
-			if($update) $this->sendMsg('/admin/videoclass/?update=1','更新成功');
+			if($update) $this->sendMsg('更新成功','/admin/videoclass/?update=1',1);
 		}
-		$this->sendMsg('/admin/videoclass/','更新失败');
+		$this->sendMsg('更新失败','admin/videoclass',1);
 	}
 
 	private function _writeConfig($file,$input,$flagName,$first,$last){
